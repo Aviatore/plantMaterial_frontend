@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {TissueService} from '../services/tissue.service';
+import {TissueService} from '../../services/tissue.service';
 import {Observable} from 'rxjs';
-import {Tissue} from '../interfaces/tissue';
+import {ITissue} from '../../interfaces/ITissue';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
 
@@ -11,8 +11,8 @@ import {MatSort} from '@angular/material/sort';
   styleUrls: ['./tissue-show.component.css']
 })
 export class TissueShowComponent implements OnInit, AfterViewInit {
-  public tissues: Tissue[];
-  public dataSource: MatTableDataSource<Tissue>;
+  public tissues: ITissue[];
+  public dataSource: MatTableDataSource<ITissue>;
   columnHeaders = ['tissueName', 'action'];
   @ViewChild(MatSort) sort: MatSort;
 
@@ -28,7 +28,7 @@ export class TissueShowComponent implements OnInit, AfterViewInit {
         this.tissues = result;
         console.log(result);
 
-        this.dataSource = new MatTableDataSource<Tissue>(this.tissues);
+        this.dataSource = new MatTableDataSource<ITissue>(this.tissues);
         this.dataSource.sort = this.sort;
       },
       error: error => {
@@ -43,7 +43,7 @@ export class TissueShowComponent implements OnInit, AfterViewInit {
     this.dataSource.filter = value;
   }
 
-  removeTissue(tissue: Tissue): void {
+  removeTissue(tissue: ITissue): void {
     return;
   }
 }

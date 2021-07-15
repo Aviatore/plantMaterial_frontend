@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpResponse} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {Tissue} from '../interfaces/tissue';
+import {ITissue} from '../interfaces/ITissue';
 import {Urls} from '../urls/urls';
 
 @Injectable({
@@ -11,7 +11,7 @@ export class TissueService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getAllTissues(): Observable<Tissue[]> {
-    return this.httpClient.get<Tissue[]>(Urls.GetAllTissues);
+  getAllTissues(): Observable<ITissue[]> {
+    return this.httpClient.get<ITissue[]>(Urls.GetAllTissues);
   }
 }

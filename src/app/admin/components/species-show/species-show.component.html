@@ -1,0 +1,27 @@
+<div class="px-2">
+  <mat-form-field>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Szukaj">
+  </mat-form-field>
+</div>
+<div class="table-responsive px-2 mx-auto">
+  <table mat-table [dataSource]="dataSource" matSort class="table-striped mat-elevation-z10 bg-light">
+    <ng-container matColumnDef="speciesName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Species name</th>
+      <td mat-cell *matCellDef="let row" class="font-italic">{{row.speciesName }}</td>
+    </ng-container>
+    <ng-container matColumnDef="speciesAliases">
+      <th mat-header-cell *matHeaderCellDef>Species aliases</th>
+      <td mat-cell *matCellDef="let row">{{row.speciesAliases.join(', ') }}</td>
+    </ng-container>
+    <ng-component matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef>Action</th>
+      <td mat-cell *matCellDef="let row">
+        <button type="button" (click)="editSpecies(row)" class="action-button edit">Edit</button>
+        <button type="button" (click)="removeSpecies(row)" class="action-button remove">Remove</button>
+      </td>
+    </ng-component>
+
+    <tr mat-header-row *matHeaderRowDef="columnHeaders"></tr>
+    <tr mat-row *matRowDef="let row; columns: columnHeaders"></tr>
+  </table>
+</div>

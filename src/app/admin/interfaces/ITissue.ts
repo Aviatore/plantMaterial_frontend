@@ -1,4 +1,4 @@
-export interface Tissue {
+export interface ITissue {
   tissueId: string;
   tissueName: string;
 }
