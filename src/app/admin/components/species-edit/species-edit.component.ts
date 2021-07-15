@@ -60,10 +60,22 @@ export class SpeciesEditComponent implements OnInit {
 
     if (value) {
       this.speciesAliases.push(value);
+      this.form.patchValue({
+        speciesAliases: [...this.speciesAliases]
+      });
     }
 
     if (event.input) {
       event.input.value = '';
     }
+  }
+
+  submit(): void {
+    console.log(this.form.getRawValue());
+    this.speciesService.editSpecies(JSON.stringify(this.form.getRawValue()), this.speciesId).subscribe({
+      next: value => {
+        console.log(value.body);
+      }
+    });
   }
 }

@@ -15,6 +15,7 @@ import { SpeciesEditComponent } from './components/species-edit/species-edit.com
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
 
 
 @NgModule({
@@ -24,19 +25,20 @@ import {MatIconModule} from '@angular/material/icon';
     SpeciesShowComponent,
     SpeciesEditComponent
   ],
-  imports: [
-    CommonModule,
-    MatFormFieldModule,
-    MatTableModule,
-    MatInputModule,
-    MatSortModule,
-    MatTooltipModule,
-    MatPaginatorModule,
-    AdminRoutingModule,
-    ReactiveFormsModule,
-    MatChipsModule,
-    MatIconModule
-  ],
+    imports: [
+        CommonModule,
+        MatFormFieldModule,
+        MatTableModule,
+        MatInputModule,
+        MatSortModule,
+        MatTooltipModule,
+        MatPaginatorModule,
+        AdminRoutingModule,
+        ReactiveFormsModule,
+        MatChipsModule,
+        MatIconModule,
+        MatButtonModule
+    ],
   exports: [
     AdminComponent
   ]
