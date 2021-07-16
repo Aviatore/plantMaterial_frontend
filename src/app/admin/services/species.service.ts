@@ -48,5 +48,12 @@ export class SpeciesService {
       observe: 'response'
     });
   }
+
+  addSpecies(species: string): Observable<HttpResponse<HttpResponse<Observable<IResponse>>>> {
+    return this.httpClient.post<HttpResponse<Observable<IResponse>>>(Urls.AddSpecies, species, {
+      headers: new HttpHeaders().set('Content-Type', 'application/json'),
+      observe: 'response'
+    });
+  }
 }
 

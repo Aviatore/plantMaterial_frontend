@@ -16,6 +16,10 @@ const routes: Routes = [
   {
     path: 'species/edit',
     component: SpeciesEditComponent
+  },
+  {
+    path: 'species/add',
+    component: SpeciesEditComponent
   }
 ];
 

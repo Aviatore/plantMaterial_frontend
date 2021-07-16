@@ -14,7 +14,7 @@ export class SpeciesEditComponent implements OnInit {
   speciesId: string;
   form: FormGroup;
   submitted = false;
-  speciesAliases: string[];
+  speciesAliases: string[] = [];
   readonly separatorKeyCodes = [ENTER] as const;
 
   constructor(private formBuilder: FormBuilder,
@@ -30,17 +30,19 @@ export class SpeciesEditComponent implements OnInit {
       speciesAliases: [[]]
     });
 
-    this.speciesService.getSpeciesAlias(this.speciesId).subscribe({
-      next: value => {
-        this.speciesAliases = [...value.speciesAliases];
+    if (this.speciesId != null) {
+      this.speciesService.getSpeciesAlias(this.speciesId).subscribe({
+        next: value => {
+          this.speciesAliases = [...value.speciesAliases];
 
-        this.form.setValue({
-          speciesName: value.speciesName,
-          speciesDescription: value.speciesDescription,
-          speciesAliases: [...value.speciesAliases]
-        });
-      }
-    });
+          this.form.setValue({
+            speciesName: value.speciesName,
+            speciesDescription: value.speciesDescription,
+            speciesAliases: [...value.speciesAliases]
+          });
+        }
+      });
+    }
   }
 
   removeAlias(alias: string): void {
@@ -72,10 +74,19 @@ export class SpeciesEditComponent implements OnInit {
 
   submit(): void {
     console.log(this.form.getRawValue());
-    this.speciesService.editSpecies(JSON.stringify(this.form.getRawValue()), this.speciesId).subscribe({
-      next: value => {
-        console.log(value.body);
-      }
-    });
+
+    if (this.speciesId != null) {
+      this.speciesService.editSpecies(JSON.stringify(this.form.getRawValue()), this.speciesId).subscribe({
+        next: value => {
+          console.log(value.body);
+        }
+      });
+    } else {
+      this.speciesService.addSpecies(JSON.stringify(this.form.getRawValue())).subscribe({
+        next: value => {
+          console.log(value.body);
+        }
+      });
+    }
   }
 }
