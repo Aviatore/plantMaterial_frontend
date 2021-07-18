@@ -1,27 +1,36 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
 import {SpeciesService} from '../../services/species.service';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatChipInputEvent} from '@angular/material/chips';
+import {Subject} from "rxjs";
+import {takeUntil} from "rxjs/operators";
 
 @Component({
   selector: 'app-species-edit',
   templateUrl: './species-edit.component.html',
   styleUrls: ['./species-edit.component.css']
 })
-export class SpeciesEditComponent implements OnInit {
+export class SpeciesEditComponent implements OnInit, OnDestroy {
   speciesId: string;
   form: FormGroup;
   submitted = false;
   speciesAliases: string[] = [];
+  componentDestroyed: Subject<any>;
   readonly separatorKeyCodes = [ENTER] as const;
 
   constructor(private formBuilder: FormBuilder,
               private activatedRoute: ActivatedRoute,
               private speciesService: SpeciesService) { }
 
+  ngOnDestroy(): void {
+        this.componentDestroyed.next();
+        this.componentDestroyed.complete();
+    }
+
   ngOnInit(): void {
+    this.componentDestroyed = new Subject();
     this.speciesId = this.activatedRoute.snapshot.queryParamMap.get('speciesId');
 
     this.form = this.formBuilder.group({
@@ -31,7 +40,7 @@ export class SpeciesEditComponent implements OnInit {
     });
 
     if (this.speciesId != null) {
-      this.speciesService.getSpeciesAlias(this.speciesId).subscribe({
+      this.speciesService.getSpeciesAlias(this.speciesId).pipe(takeUntil(this.componentDestroyed)).subscribe({
         next: value => {
           this.speciesAliases = [...value.speciesAliases];
 
@@ -76,13 +85,13 @@ export class SpeciesEditComponent implements OnInit {
     console.log(this.form.getRawValue());
 
     if (this.speciesId != null) {
-      this.speciesService.editSpecies(JSON.stringify(this.form.getRawValue()), this.speciesId).subscribe({
+      this.speciesService.editSpecies(JSON.stringify(this.form.getRawValue()), this.speciesId).pipe(takeUntil(this.componentDestroyed)).subscribe({
         next: value => {
           console.log(value.body);
         }
       });
     } else {
-      this.speciesService.addSpecies(JSON.stringify(this.form.getRawValue())).subscribe({
+      this.speciesService.addSpecies(JSON.stringify(this.form.getRawValue())).pipe(takeUntil(this.componentDestroyed)).subscribe({
         next: value => {
           console.log(value.body);
         }

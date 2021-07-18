@@ -51,3 +51,23 @@ td, th {
   /*change color of underline when focused*/
   background-color: green !important;;
 }
+
+.action-button {
+  height: 20px;
+  width: 50px;
+  border-radius: 5px;
+  font-size: 0.7em;
+  border: black 1px solid;
+}
+.edit:hover {
+  background-color: #43a0db;
+}
+.edit:active {
+  background-color: #40b5d9;
+}
+.remove:hover {
+  background-color: #ea2323;
+}
+.remove:active {
+  background-color: #ec4c4c;
+}

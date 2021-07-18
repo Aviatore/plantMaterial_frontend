@@ -1,29 +1,38 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ISpecies} from '../../interfaces/ISpecies';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
 import {SpeciesService} from '../../services/species.service';
 import {ITissue} from '../../interfaces/ITissue';
 import {Router} from '@angular/router';
+import {Subject} from "rxjs";
+import {takeUntil} from "rxjs/operators";
 
 @Component({
   selector: 'app-species-show',
   templateUrl: './species-show.component.html',
   styleUrls: ['./species-show.component.css']
 })
-export class SpeciesShowComponent implements OnInit, AfterViewInit {
+export class SpeciesShowComponent implements OnInit, AfterViewInit, OnDestroy {
   public species: ISpecies[];
   public dataSource: MatTableDataSource<ISpecies>;
+  componentDestroyed: Subject<any>;
   columnHeaders = ['speciesName', 'speciesAliases', 'action'];
   @ViewChild(MatSort) sort: MatSort;
   constructor(private speciesService: SpeciesService,
               private router: Router) { }
 
+  ngOnDestroy(): void {
+        this.componentDestroyed.next();
+        this.componentDestroyed.complete();
+    }
+
   ngOnInit(): void {
+    this.componentDestroyed = new Subject();
   }
 
   ngAfterViewInit(): void {
-    this.speciesService.getAllSpeciesAlias().subscribe(
+    this.speciesService.getAllSpeciesAlias().pipe(takeUntil(this.componentDestroyed)).subscribe(
       {
         next: value => {
           this.species = value;
@@ -44,7 +53,7 @@ export class SpeciesShowComponent implements OnInit, AfterViewInit {
   }
 
   removeSpecies(species: ISpecies): void {
-    this.speciesService.removeSpecies(species.speciesId).subscribe({
+    this.speciesService.removeSpecies(species.speciesId).pipe(takeUntil(this.componentDestroyed)).subscribe({
       next: value => {
         console.log(value.body);
         this.removeRow(species);
