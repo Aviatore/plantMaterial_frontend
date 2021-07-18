@@ -19,6 +19,8 @@ import {MatButtonModule} from '@angular/material/button';
 import { TissueEditComponent } from './components/tissue-edit/tissue-edit.component';
 import { ContainersShowComponent } from './components/containers-show/containers-show.component';
 import { ContainersEditComponent } from './components/containers-edit/containers-edit.component';
+import { LocationTypeShowComponent } from './components/location-type-show/location-type-show.component';
+import { LocationTypeEditComponent } from './components/location-type-edit/location-type-edit.component';
 
 
 @NgModule({
@@ -29,7 +31,9 @@ import { ContainersEditComponent } from './components/containers-edit/containers
     SpeciesEditComponent,
     TissueEditComponent,
     ContainersShowComponent,
-    ContainersEditComponent
+    ContainersEditComponent,
+    LocationTypeShowComponent,
+    LocationTypeEditComponent
   ],
     imports: [
         CommonModule,

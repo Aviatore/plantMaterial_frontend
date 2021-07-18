@@ -6,5 +6,8 @@ export const Urls = {
   AddSpecies: 'http://localhost:5000/species/new',
   GetAllContainers: 'http://localhost:5000/containers',
   AddContainer: 'http://localhost:5000/container/edit',
-  RemoveContainer: 'http://localhost:5000/container/remove'
+  RemoveContainer: 'http://localhost:5000/container/remove',
+  GetAllLocationTypes: 'http://localhost:5000/location-types',
+  AddLocationType: 'http://localhost:5000/location-types/edit',
+  RemoveLocationType: 'http://localhost:5000/location-types/remove'
 };
