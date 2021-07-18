@@ -4,6 +4,8 @@ import {TissueShowComponent} from './components/tissue-show/tissue-show.componen
 import {SpeciesShowComponent} from './components/species-show/species-show.component';
 import {SpeciesEditComponent} from './components/species-edit/species-edit.component';
 import {TissueEditComponent} from "./components/tissue-edit/tissue-edit.component";
+import {ContainersShowComponent} from "./components/containers-show/containers-show.component";
+import {ContainersEditComponent} from "./components/containers-edit/containers-edit.component";
 
 const routes: Routes = [
   {
@@ -29,6 +31,18 @@ const routes: Routes = [
   {
     path: 'species/add',
     component: SpeciesEditComponent
+  },
+  {
+    path: 'containers',
+    component: ContainersShowComponent
+  },
+  {
+    path: 'containers/add',
+    component: ContainersEditComponent
+  },
+  {
+    path: 'containers/edit',
+    component: ContainersEditComponent
   }
 ];
 

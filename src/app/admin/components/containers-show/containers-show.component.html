@@ -1,0 +1,24 @@
+<div class="px-2">
+  <mat-form-field>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Szukaj">
+  </mat-form-field>
+</div>
+<div class="table-responsive px-2 mx-auto" >
+  <table mat-table [dataSource]="dataSource" matSort class="table-striped mat-elevation-z10 bg-light">
+    <ng-component matColumnDef="containerTypeName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Container name</th>
+      <td mat-cell *matCellDef="let row">{{row.containerTypeName | titlecase}}</td>
+    </ng-component>
+
+    <ng-component matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef>Action</th>
+      <td mat-cell *matCellDef="let row">
+        <button type="button" (click)="editContainer(row)" class="action-button edit">Edit</button>
+        <button type="button" (click)="removeContainer(row)" class="action-button remove">Remove</button>
+      </td>
+    </ng-component>
+
+    <tr mat-header-row *matHeaderRowDef="columnHeaders"></tr>
+    <tr mat-row *matRowDef="let row; columns: columnHeaders;"></tr>
+  </table>
+</div>

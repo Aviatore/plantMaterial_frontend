@@ -77,6 +77,6 @@ export class TissueShowComponent implements OnInit, AfterViewInit, OnDestroy {
         tissueId: tissue.tissueId
       }
     });
-    console.log(`species name: ${tissue.tissueName}`);
+    console.log(`tissue name: ${tissue.tissueName}`);
   }
 }

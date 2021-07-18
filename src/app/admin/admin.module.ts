@@ -17,6 +17,8 @@ import {MatChipsModule} from '@angular/material/chips';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import { TissueEditComponent } from './components/tissue-edit/tissue-edit.component';
+import { ContainersShowComponent } from './components/containers-show/containers-show.component';
+import { ContainersEditComponent } from './components/containers-edit/containers-edit.component';
 
 
 @NgModule({
@@ -25,7 +27,9 @@ import { TissueEditComponent } from './components/tissue-edit/tissue-edit.compon
     TissueShowComponent,
     SpeciesShowComponent,
     SpeciesEditComponent,
-    TissueEditComponent
+    TissueEditComponent,
+    ContainersShowComponent,
+    ContainersEditComponent
   ],
     imports: [
         CommonModule,
