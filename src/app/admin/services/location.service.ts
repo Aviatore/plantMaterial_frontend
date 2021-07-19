@@ -6,6 +6,7 @@ import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from "@angular/common
 import {IResponse} from "../interfaces/IResponse";
 import {IContainer} from "../interfaces/IContainer";
 import {ILocationType} from "../interfaces/ILocationType";
+import {IShelfPosition} from '../interfaces/IShelfPosition';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,10 @@ export class LocationService {
     return this.httpClient.get<ILocationType[]>(Urls.GetAllLocationTypes);
   }
 
+  getAllShelfPositions(): Observable<IShelfPosition[]> {
+    return this.httpClient.get<IShelfPosition[]>(Urls.GetAllShelfPositions);
+  }
+
   getContainer(containerId: string): Observable<IContainer> {
     return this.httpClient.get<IContainer>(Urls.GetAllContainers, {
       params: new HttpParams().set('containerId', containerId)
@@ -34,31 +39,51 @@ export class LocationService {
     });
   }
 
+  getShelfPosition(shelfPositionId: string): Observable<IShelfPosition> {
+    return this.httpClient.get<IShelfPosition>(Urls.GetAllShelfPositions, {
+      params: new HttpParams().set('shelfPositionId', shelfPositionId)
+    });
+  }
+
   addContainer(container: string): Observable<HttpResponse<HttpResponse<Observable<IContainer>>>> {
     return this.httpClient.post<HttpResponse<Observable<IContainer>>>(Urls.AddContainer, container, {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
       observe: 'response'
-    })
+    });
   }
 
   addLocationType(locationType: string): Observable<HttpResponse<HttpResponse<Observable<ILocationType>>>> {
     return this.httpClient.post<HttpResponse<Observable<ILocationType>>>(Urls.AddLocationType, locationType, {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
       observe: 'response'
-    })
+    });
+  }
+
+  addShelfPosition(shelfPosition: string): Observable<HttpResponse<HttpResponse<Observable<IShelfPosition>>>> {
+    return this.httpClient.post<HttpResponse<Observable<IShelfPosition>>>(Urls.AddShelfPosition, shelfPosition, {
+      headers: new HttpHeaders().set('Content-Type', 'application/json'),
+      observe: 'response'
+    });
   }
 
   removeContainer(containerId: string): Observable<HttpResponse<HttpResponse<Observable<IResponse>>>> {
     return this.httpClient.get<HttpResponse<Observable<IResponse>>>(Urls.RemoveContainer, {
       params: new HttpParams().set('containerId', containerId),
       observe: 'response'
-    })
+    });
   }
 
   removeLocationType(locationTypeId: string): Observable<HttpResponse<HttpResponse<Observable<IResponse>>>> {
     return this.httpClient.get<HttpResponse<Observable<IResponse>>>(Urls.RemoveLocationType, {
       params: new HttpParams().set('locationTypeId', locationTypeId),
       observe: 'response'
-    })
+    });
+  }
+
+  removeShelfPosition(shelfPositionId: string): Observable<HttpResponse<HttpResponse<Observable<IShelfPosition>>>> {
+    return this.httpClient.get<HttpResponse<Observable<IShelfPosition>>>(Urls.RemoveShelfPosition, {
+      params: new HttpParams().set('shelfPositionId', shelfPositionId),
+      observe: 'response'
+    });
   }
 }

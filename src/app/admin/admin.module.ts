@@ -21,6 +21,8 @@ import { ContainersShowComponent } from './components/containers-show/containers
 import { ContainersEditComponent } from './components/containers-edit/containers-edit.component';
 import { LocationTypeShowComponent } from './components/location-type-show/location-type-show.component';
 import { LocationTypeEditComponent } from './components/location-type-edit/location-type-edit.component';
+import { ShelfPositionShowComponent } from './components/shelf-position-show/shelf-position-show.component';
+import { ShelfPositionEditComponent } from './components/shelf-position-edit/shelf-position-edit.component';
 
 
 @NgModule({
@@ -33,7 +35,9 @@ import { LocationTypeEditComponent } from './components/location-type-edit/locat
     ContainersShowComponent,
     ContainersEditComponent,
     LocationTypeShowComponent,
-    LocationTypeEditComponent
+    LocationTypeEditComponent,
+    ShelfPositionShowComponent,
+    ShelfPositionEditComponent
   ],
     imports: [
         CommonModule,

@@ -9,5 +9,9 @@ export const Urls = {
   RemoveContainer: 'http://localhost:5000/container/remove',
   GetAllLocationTypes: 'http://localhost:5000/location-types',
   AddLocationType: 'http://localhost:5000/location-types/edit',
-  RemoveLocationType: 'http://localhost:5000/location-types/remove'
+  RemoveLocationType: 'http://localhost:5000/location-types/remove',
+
+  GetAllShelfPositions: 'http://localhost:5000/shelf-positions',
+  AddShelfPosition: 'http://localhost:5000/shelf-positions/edit',
+  RemoveShelfPosition: 'http://localhost:5000/shelf-positions/remove'
 };
