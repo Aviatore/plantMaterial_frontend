@@ -14,6 +14,7 @@ import {AnalysisTypesEditComponent} from "./components/analysis-types-edit/analy
 import {AnalysisTypesShowComponent} from "./components/analysis-types-show/analysis-types-show.component";
 import {LocationShowComponent} from "./components/location-show/location-show.component";
 import {LocationEditComponent} from "./components/location-edit/location-edit.component";
+import {PopulationShowComponent} from "./components/population-show/population-show.component";
 
 const routes: Routes = [
   {
@@ -99,6 +100,10 @@ const routes: Routes = [
   {
     path: 'location/add',
     component: LocationEditComponent
+  },
+  {
+    path: 'populations',
+    component: PopulationShowComponent
   }
 ];
 

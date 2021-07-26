@@ -21,5 +21,9 @@ export const Urls = {
 
   GetAllLocations: 'http://localhost:5000/locations',
   AddLocation: 'http://localhost:5000/location/edit',
-  RemoveLocation: 'http://localhost:5000/location/remove'
+  RemoveLocation: 'http://localhost:5000/location/remove',
+
+  GetAllPopulations: 'http://localhost:5000/populations',
+  AddPopulation: 'http://localhost:5000/population/edit',
+  RemovePopulation: 'http://localhost:5000/population/remove'
 };

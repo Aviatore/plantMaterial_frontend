@@ -1,0 +1,73 @@
+table {
+  width: 100%;
+}
+
+i {
+  cursor: pointer;
+  color: #636363;
+}
+
+td, th {
+  color: #636363;
+  padding: 0;
+  margin: 0;
+  border: 1px solid black;
+}
+
+.fa-user-slash:hover {
+  color: red;
+}
+
+.fa-user-edit:hover {
+  color: #afafaf;
+}
+
+:host ::ng-deep .mat-sort-header-container {
+  padding: 0 0 0 15px;
+  display: flex;
+  justify-content: center;
+}
+
+.mat-cell, .mat-header-cell {
+  padding: 0 0 0 25px;
+  text-align: center !important;
+}
+
+::ng-deep .mat-sort-header-arrow {
+  color: #636363 !important;
+}
+
+::ng-deep .mat-form-field-label {
+  /*change color of label*/
+  color: green !important;
+}
+
+::ng-deep.mat-form-field-underline {
+  /*change color of underline*/
+  background-color: green !important;
+}
+
+::ng-deep.mat-form-field-ripple {
+  /*change color of underline when focused*/
+  background-color: green !important;;
+}
+
+.action-button {
+  height: 20px;
+  width: 50px;
+  border-radius: 5px;
+  font-size: 0.7em;
+  border: black 1px solid;
+}
+.edit:hover {
+  background-color: #43a0db;
+}
+.edit:active {
+  background-color: #40b5d9;
+}
+.remove:hover {
+  background-color: #ea2323;
+}
+.remove:active {
+  background-color: #ec4c4c;
+}
