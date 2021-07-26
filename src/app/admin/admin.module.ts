@@ -30,6 +30,7 @@ import { LocationEditComponent } from './components/location-edit/location-edit.
 import {MatOptionModule} from "@angular/material/core";
 import {MatSelectModule} from "@angular/material/select";
 import { PopulationShowComponent } from './components/population-show/population-show.component';
+import { PopulationEditComponent } from './components/population-edit/population-edit.component';
 
 
 @NgModule({
@@ -49,7 +50,8 @@ import { PopulationShowComponent } from './components/population-show/population
     AnalysisTypesShowComponent,
     LocationShowComponent,
     LocationEditComponent,
-    PopulationShowComponent
+    PopulationShowComponent,
+    PopulationEditComponent
   ],
   imports: [
     CommonModule,

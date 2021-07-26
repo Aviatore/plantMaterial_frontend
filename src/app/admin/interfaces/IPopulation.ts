@@ -3,4 +3,5 @@ export interface IPopulation {
   populationName: string;
   populationDescription: string;
   speciesName: string;
+  speciesId: string;
 }

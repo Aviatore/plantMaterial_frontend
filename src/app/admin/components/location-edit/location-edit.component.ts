@@ -29,11 +29,6 @@ export class LocationEditComponent implements OnInit, OnDestroy {
               private locationService: LocationService) { }
 
   ngOnInit(): void {
-
-    this.shelfPositions$ = this.locationService.getAllShelfPositions();
-    this.locationTypes$ = this.locationService.getAllLocationTypes();
-    this.containers$ = this.locationService.getAllContainers();
-    this.ls = this.locationService;
     this.componentDestroyed = new Subject();
 
     this.locationId = this.activatedRoute.snapshot.queryParamMap.get('locationId');

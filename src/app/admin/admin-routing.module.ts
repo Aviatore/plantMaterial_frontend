@@ -15,6 +15,7 @@ import {AnalysisTypesShowComponent} from "./components/analysis-types-show/analy
 import {LocationShowComponent} from "./components/location-show/location-show.component";
 import {LocationEditComponent} from "./components/location-edit/location-edit.component";
 import {PopulationShowComponent} from "./components/population-show/population-show.component";
+import {PopulationEditComponent} from "./components/population-edit/population-edit.component";
 
 const routes: Routes = [
   {
@@ -104,7 +105,15 @@ const routes: Routes = [
   {
     path: 'populations',
     component: PopulationShowComponent
-  }
+  },
+  {
+    path: 'population/edit',
+    component: PopulationEditComponent
+  },
+  {
+    path: 'population/add',
+    component: PopulationEditComponent
+  },
 ];
 
 @NgModule({
