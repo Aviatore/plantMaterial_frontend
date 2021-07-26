@@ -23,6 +23,12 @@ import { LocationTypeShowComponent } from './components/location-type-show/locat
 import { LocationTypeEditComponent } from './components/location-type-edit/location-type-edit.component';
 import { ShelfPositionShowComponent } from './components/shelf-position-show/shelf-position-show.component';
 import { ShelfPositionEditComponent } from './components/shelf-position-edit/shelf-position-edit.component';
+import { AnalysisTypesEditComponent } from './components/analysis-types-edit/analysis-types-edit.component';
+import { AnalysisTypesShowComponent } from './components/analysis-types-show/analysis-types-show.component';
+import { LocationShowComponent } from './components/location-show/location-show.component';
+import { LocationEditComponent } from './components/location-edit/location-edit.component';
+import {MatOptionModule} from "@angular/material/core";
+import {MatSelectModule} from "@angular/material/select";
 
 
 @NgModule({
@@ -37,22 +43,28 @@ import { ShelfPositionEditComponent } from './components/shelf-position-edit/she
     LocationTypeShowComponent,
     LocationTypeEditComponent,
     ShelfPositionShowComponent,
-    ShelfPositionEditComponent
+    ShelfPositionEditComponent,
+    AnalysisTypesEditComponent,
+    AnalysisTypesShowComponent,
+    LocationShowComponent,
+    LocationEditComponent
   ],
-    imports: [
-        CommonModule,
-        MatFormFieldModule,
-        MatTableModule,
-        MatInputModule,
-        MatSortModule,
-        MatTooltipModule,
-        MatPaginatorModule,
-        AdminRoutingModule,
-        ReactiveFormsModule,
-        MatChipsModule,
-        MatIconModule,
-        MatButtonModule
-    ],
+  imports: [
+    CommonModule,
+    MatFormFieldModule,
+    MatTableModule,
+    MatInputModule,
+    MatSortModule,
+    MatTooltipModule,
+    MatPaginatorModule,
+    AdminRoutingModule,
+    ReactiveFormsModule,
+    MatChipsModule,
+    MatIconModule,
+    MatButtonModule,
+    MatOptionModule,
+    MatSelectModule
+  ],
   exports: [
     AdminComponent
   ]

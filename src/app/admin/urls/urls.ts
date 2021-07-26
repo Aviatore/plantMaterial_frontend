@@ -13,5 +13,13 @@ export const Urls = {
 
   GetAllShelfPositions: 'http://localhost:5000/shelf-positions',
   AddShelfPosition: 'http://localhost:5000/shelf-positions/edit',
-  RemoveShelfPosition: 'http://localhost:5000/shelf-positions/remove'
+  RemoveShelfPosition: 'http://localhost:5000/shelf-positions/remove',
+
+  GetAllAnalysisType: 'http://localhost:5000/analysis-types',
+  AddAnalysisType: 'http://localhost:5000/analysis-type/edit',
+  RemoveAnalysisType: 'http://localhost:5000/analysis-type/remove',
+
+  GetAllLocations: 'http://localhost:5000/locations',
+  AddLocation: 'http://localhost:5000/location/edit',
+  RemoveLocation: 'http://localhost:5000/location/remove'
 };

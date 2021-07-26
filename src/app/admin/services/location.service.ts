@@ -7,6 +7,7 @@ import {IResponse} from "../interfaces/IResponse";
 import {IContainer} from "../interfaces/IContainer";
 import {ILocationType} from "../interfaces/ILocationType";
 import {IShelfPosition} from '../interfaces/IShelfPosition';
+import {ILocation} from "../interfaces/ILocation";
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,10 @@ export class LocationService {
     return this.httpClient.get<IShelfPosition[]>(Urls.GetAllShelfPositions);
   }
 
+  getAllLocations(): Observable<ILocation[]> {
+    return this.httpClient.get<ILocation[]>(Urls.GetAllLocations);
+  }
+
   getContainer(containerId: string): Observable<IContainer> {
     return this.httpClient.get<IContainer>(Urls.GetAllContainers, {
       params: new HttpParams().set('containerId', containerId)
@@ -42,6 +47,12 @@ export class LocationService {
   getShelfPosition(shelfPositionId: string): Observable<IShelfPosition> {
     return this.httpClient.get<IShelfPosition>(Urls.GetAllShelfPositions, {
       params: new HttpParams().set('shelfPositionId', shelfPositionId)
+    });
+  }
+
+  getLocation(locationId: string): Observable<ILocation> {
+    return this.httpClient.get<ILocation>(Urls.GetAllLocations, {
+      params: new HttpParams().set('locationId', locationId)
     });
   }
 
@@ -66,6 +77,13 @@ export class LocationService {
     });
   }
 
+  addLocation(location: string): Observable<HttpResponse<HttpResponse<Observable<ILocation>>>> {
+    return this.httpClient.post<HttpResponse<Observable<ILocation>>>(Urls.AddLocation, location, {
+      headers: new HttpHeaders().set('Content-Type', 'application/json'),
+      observe: 'response'
+    });
+  }
+
   removeContainer(containerId: string): Observable<HttpResponse<HttpResponse<Observable<IResponse>>>> {
     return this.httpClient.get<HttpResponse<Observable<IResponse>>>(Urls.RemoveContainer, {
       params: new HttpParams().set('containerId', containerId),
@@ -83,6 +101,13 @@ export class LocationService {
   removeShelfPosition(shelfPositionId: string): Observable<HttpResponse<HttpResponse<Observable<IShelfPosition>>>> {
     return this.httpClient.get<HttpResponse<Observable<IShelfPosition>>>(Urls.RemoveShelfPosition, {
       params: new HttpParams().set('shelfPositionId', shelfPositionId),
+      observe: 'response'
+    });
+  }
+
+  removeLocation(locationId: string): Observable<HttpResponse<HttpResponse<Observable<ILocation>>>> {
+    return this.httpClient.get<HttpResponse<Observable<ILocation>>>(Urls.RemoveLocation, {
+      params: new HttpParams().set('locationId', locationId),
       observe: 'response'
     });
   }

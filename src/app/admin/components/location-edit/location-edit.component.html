@@ -1,0 +1,33 @@
+<div class="container">
+  <form [formGroup]="form">
+
+    <div class="row mb-2">
+      <div class="col-md-12 form-input">
+        <input type="text" placeholder="Location name" [class.is-invalid]="form.controls.locationName.invalid && (form.controls.locationName.touched || submitted)" formControlName="locationName">
+      </div>
+    </div>
+
+    <div class="row mb-2">
+      <div class="col-md-12 form-input">
+        <label for="locationTypeId">Location type: </label>
+          <select id="locationTypeId" formControlName="locationTypeId">
+            <option *ngFor="let pos of (locationTypes$ | async)" [value] = pos.locationTypeId>
+              {{pos.locationTypeName}}
+            </option>
+          </select>
+      </div>
+    </div>
+
+    <div class="row mb-2">
+      <div class="col-md-12">
+          <textarea id="locationDescription" placeholder="Description" formControlName="locationDescription" rows="3"></textarea>
+      </div>
+    </div>
+
+    <div class="row mb-2">
+      <div class="col-md-12">
+        <button mat-raised-button color="primary" (click)="submit()">Submit</button>
+      </div>
+    </div>
+  </form>
+</div>

@@ -10,6 +10,10 @@ import {LocationTypeShowComponent} from "./components/location-type-show/locatio
 import {LocationTypeEditComponent} from "./components/location-type-edit/location-type-edit.component";
 import {ShelfPositionShowComponent} from './components/shelf-position-show/shelf-position-show.component';
 import {ShelfPositionEditComponent} from './components/shelf-position-edit/shelf-position-edit.component';
+import {AnalysisTypesEditComponent} from "./components/analysis-types-edit/analysis-types-edit.component";
+import {AnalysisTypesShowComponent} from "./components/analysis-types-show/analysis-types-show.component";
+import {LocationShowComponent} from "./components/location-show/location-show.component";
+import {LocationEditComponent} from "./components/location-edit/location-edit.component";
 
 const routes: Routes = [
   {
@@ -71,6 +75,30 @@ const routes: Routes = [
   {
     path: 'shelf-position/add',
     component: ShelfPositionEditComponent
+  },
+  {
+    path: 'analysis-types',
+    component: AnalysisTypesShowComponent
+  },
+  {
+    path: 'analysis-type/edit',
+    component: AnalysisTypesEditComponent
+  },
+  {
+    path: 'analysis-type/add',
+    component: AnalysisTypesEditComponent
+  },
+  {
+    path: 'locations',
+    component: LocationShowComponent
+  },
+  {
+    path: 'location/edit',
+    component: LocationEditComponent
+  },
+  {
+    path: 'location/add',
+    component: LocationEditComponent
   }
 ];
 

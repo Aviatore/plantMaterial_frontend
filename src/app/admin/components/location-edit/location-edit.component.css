@@ -1,0 +1,8 @@
+label {
+  width: 120px;
+}
+
+.is-invalid {
+  outline-color: red;
+  border-color: red;
+}
