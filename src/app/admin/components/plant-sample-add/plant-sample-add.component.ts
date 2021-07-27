@@ -13,6 +13,8 @@ import {ISpecies} from "../../interfaces/ISpecies";
 import {SelectionChange} from "@angular/cdk/collections";
 import {ITissue} from "../../interfaces/ITissue";
 import {TissueService} from "../../services/tissue.service";
+import {IDuplication} from "../../interfaces/IDuplication";
+import {DuplicationsService} from "../../services/duplications.service";
 
 @Component({
   selector: 'app-plant-sample-add',
@@ -26,6 +28,7 @@ export class PlantSampleAddComponent implements OnInit, OnDestroy {
   populations$: Observable<IPopulation[]>;
   species$: Observable<ISpecies[]>;
   tissues$: Observable<ITissue[]>;
+  duplications$: Observable<IDuplication[]>;
   ppp = false;
 
   constructor(private formBuilder: FormBuilder,
@@ -33,12 +36,14 @@ export class PlantSampleAddComponent implements OnInit, OnDestroy {
               private plantSampleService: PlantSampleService,
               private populationService: PopulationService,
               private speciesService: SpeciesService,
-              private tissueService: TissueService) { }
+              private tissueService: TissueService,
+              private duplicationService: DuplicationsService) { }
 
   ngOnInit(): void {
     this.populations$ = new Observable<IPopulation[]>(subscriber => subscriber.next(null));
     this.species$ = this.speciesService.getAllSpecies().pipe(map(p => p.sort()));
     this.tissues$ = this.tissueService.getAllTissues().pipe(map(p => p.sort()));
+    this.duplications$ = this.duplicationService.getAllDuplications().pipe(map(p => p.sort()));
 
     this.form = this.formBuilder.group({
       populationId: [''],

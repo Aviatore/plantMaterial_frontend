@@ -32,4 +32,5 @@ export const Urls = {
   AddPlantSamples: 'http://localhost:5000/plant-sample/add',
   RemovePlantSample: 'http://localhost:5000/plant-sample/remove',
 
+  GetAllDuplications: 'http://localhost:5000/duplications',
 };
