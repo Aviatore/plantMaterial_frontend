@@ -92,10 +92,23 @@ export class PlantSampleAddComponent implements OnInit, OnDestroy {
       containerTypeId: [''],
       sampleNameRanges: [''],
       collectionDate: [''],
+      sampleWeight: [''],
       plantSamples: this.formBuilder.array([])
     });
 
     this.form.controls.populationId.disable();
+  }
+
+  submit(): void {
+    this.submitted = true;
+    console.log(this.plantSamples.getRawValue());
+
+    this.plantSampleService.addPlantSample(JSON.stringify(this.plantSamples.getRawValue())).pipe(takeUntil(this.componentDestroyed)).subscribe({
+      next: value => {
+        console.log(value.body);
+      },
+      error: err => console.log(err)
+    });
   }
 
   get plantSamples(): FormArray {
@@ -130,7 +143,7 @@ export class PlantSampleAddComponent implements OnInit, OnDestroy {
             plantSampleDescription: [''],
             tissueId: [this.form.controls.tissueId.value],
             duplicationId: [this.form.controls.duplicationId.value],
-            sampleWeight: [''],
+            sampleWeight: [this.form.controls.sampleWeight.value],
             locationId: [this.form.controls.locationId.value],
             shelfPositionId: [this.form.controls.shelfPositionId.value],
             containerTypeId: [this.form.controls.containerTypeId.value]
@@ -145,7 +158,7 @@ export class PlantSampleAddComponent implements OnInit, OnDestroy {
           plantSampleDescription: [''],
           tissueId: [this.form.controls.tissueId.value],
           duplicationId: [this.form.controls.duplicationId.value],
-          sampleWeight: [''],
+          sampleWeight: [this.form.controls.sampleWeight.value],
           locationId: [this.form.controls.locationId.value],
           shelfPositionId: [this.form.controls.shelfPositionId.value],
           containerTypeId: [this.form.controls.containerTypeId.value]

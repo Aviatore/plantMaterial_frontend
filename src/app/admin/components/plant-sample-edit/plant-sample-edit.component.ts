@@ -12,8 +12,7 @@ export class PlantSampleEditComponent implements OnInit, OnDestroy {
   componentDestroyed: Subject<any>;
   form: FormGroup;
   submitted = false;
-  populations$: Observable<ISpecies[]>;
-
+  species$: Observable<ISpecies[]>;
 
   constructor() { }
 

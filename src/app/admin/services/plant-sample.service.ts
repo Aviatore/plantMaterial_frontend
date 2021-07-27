@@ -12,7 +12,7 @@ export class PlantSampleService {
 
   constructor(private httpClient: HttpClient) { }
 
-  addPlantSample(plantSamples: string[]): Observable<HttpResponse<HttpResponse<Observable<any>>>> {
+  addPlantSample(plantSamples: string): Observable<HttpResponse<HttpResponse<Observable<any>>>> {
     return this.httpClient.post<HttpResponse<Observable<IPlantSample>>>(Urls.AddPlantSamples, plantSamples, {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
       observe: 'response'
