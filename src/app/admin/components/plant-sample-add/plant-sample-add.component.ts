@@ -1,6 +1,6 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Observable, Subject} from "rxjs";
-import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Form, FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute} from "@angular/router";
 import {PopulationService} from "../../services/population.service";
 import {SpeciesService} from "../../services/species.service";
@@ -15,6 +15,10 @@ import {ITissue} from "../../interfaces/ITissue";
 import {TissueService} from "../../services/tissue.service";
 import {IDuplication} from "../../interfaces/IDuplication";
 import {DuplicationsService} from "../../services/duplications.service";
+import {ILocation} from "../../interfaces/ILocation";
+import {LocationService} from "../../services/location.service";
+import {IShelfPosition} from "../../interfaces/IShelfPosition";
+import {IContainer} from "../../interfaces/IContainer";
 
 @Component({
   selector: 'app-plant-sample-add',
@@ -29,6 +33,9 @@ export class PlantSampleAddComponent implements OnInit, OnDestroy {
   species$: Observable<ISpecies[]>;
   tissues$: Observable<ITissue[]>;
   duplications$: Observable<IDuplication[]>;
+  locations$: Observable<ILocation[]>;
+  shelfPositions$: Observable<IShelfPosition[]>;
+  containerType$: Observable<IContainer[]>;
   ppp = false;
 
   constructor(private formBuilder: FormBuilder,
@@ -37,13 +44,17 @@ export class PlantSampleAddComponent implements OnInit, OnDestroy {
               private populationService: PopulationService,
               private speciesService: SpeciesService,
               private tissueService: TissueService,
-              private duplicationService: DuplicationsService) { }
+              private duplicationService: DuplicationsService,
+              private locationService: LocationService) { }
 
   ngOnInit(): void {
     this.populations$ = new Observable<IPopulation[]>(subscriber => subscriber.next(null));
     this.species$ = this.speciesService.getAllSpecies().pipe(map(p => p.sort()));
     this.tissues$ = this.tissueService.getAllTissues().pipe(map(p => p.sort()));
     this.duplications$ = this.duplicationService.getAllDuplications().pipe(map(p => p.sort()));
+    this.locations$ = this.locationService.getAllLocations().pipe(map(p => p.sort()));
+    this.shelfPositions$ = this.locationService.getAllShelfPositions().pipe(map(p => p.sort()));
+    this.containerType$ = this.locationService.getAllContainers().pipe(map(p => p.sort()));
 
     this.form = this.formBuilder.group({
       populationId: [''],
@@ -53,14 +64,19 @@ export class PlantSampleAddComponent implements OnInit, OnDestroy {
       shelfPositionId: [''],
       containerTypeId: [''],
       sampleNameRanges: [''],
+      collectionDate: [''],
       plantSamples: this.formBuilder.array([])
     });
 
     this.form.controls.populationId.disable();
   }
 
-  get plantSamples() {
+  get plantSamples(): FormArray {
     return this.form.get('plantSamples') as FormArray;
+  }
+
+  plantSampleValid(index: number, item: string): boolean {
+    return this.plantSamples.controls[index].get(item).invalid;
   }
 
   onSpeciesSelectionChange(event): void {
@@ -80,12 +96,32 @@ export class PlantSampleAddComponent implements OnInit, OnDestroy {
       if (valueSplitted.length > 1) {
         for (let i = valueSplitted[0]; i <= valueSplitted[1]; i++) {
           this.plantSamples.push(this.formBuilder.group({
-            sampleName: [i]
+            plantSampleId: [GuidEmpty],
+            sampleName: [i, Validators.required],
+            collectionDate: [this.form.controls.collectionDate.value],
+            populationId: [this.form.controls.populationId.value],
+            plantSampleDescription: [''],
+            tissueId: [this.form.controls.tissueId.value],
+            duplicationId: [this.form.controls.duplicationId.value],
+            sampleWeight: [''],
+            locationId: [this.form.controls.locationId.value],
+            shelfPositionId: [this.form.controls.shelfPositionId.value],
+            containerTypeId: [this.form.controls.containerTypeId.value]
           }));
         }
       } else {
         this.plantSamples.push(this.formBuilder.group({
-          sampleName: [valueSplitted[0]]
+          plantSampleId: [GuidEmpty],
+          sampleName: [valueSplitted[0], Validators.required],
+          collectionDate: [this.form.controls.collectionDate.value],
+          populationId: [this.form.controls.populationId.value],
+          plantSampleDescription: [''],
+          tissueId: [this.form.controls.tissueId.value],
+          duplicationId: [this.form.controls.duplicationId.value],
+          sampleWeight: [''],
+          locationId: [this.form.controls.locationId.value],
+          shelfPositionId: [this.form.controls.shelfPositionId.value],
+          containerTypeId: [this.form.controls.containerTypeId.value]
         }));
       }
     });

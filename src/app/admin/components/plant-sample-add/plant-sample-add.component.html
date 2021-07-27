@@ -44,6 +44,38 @@
       </select>
     </div>
 
+    <div class="col-md-12 form-input">
+      <label for="locationId">Location: </label>
+      <select id="locationId" formControlName="locationId">
+        <option *ngFor="let pos of (locations$ | async)" [value] = pos.locationId>
+          {{pos.locationName}}
+        </option>
+      </select>
+    </div>
+
+    <div class="col-md-12 form-input">
+      <label for="shelfPositionId">Shelf position: </label>
+      <select id="shelfPositionId" formControlName="shelfPositionId">
+        <option *ngFor="let pos of (shelfPositions$ | async)" [value] = pos.shelfPositionId>
+          {{pos.shelfPositionName}}
+        </option>
+      </select>
+    </div>
+
+    <div class="col-md-12 form-input">
+      <label for="containerTypeId">Container type: </label>
+      <select id="containerTypeId" formControlName="containerTypeId">
+        <option *ngFor="let pos of (containerType$ | async)" [value] = pos.containerTypeId>
+          {{pos.containerTypeName}}
+        </option>
+      </select>
+    </div>
+
+    <div class="col-md-12 form-input">
+      <label for="collectionDate">Collection date: </label>
+      <input type="date" id="collectionDate" formControlName="collectionDate">
+    </div>
+
     <div class="row mb-2">
       <div class="col-md-12">
         <button mat-raised-button color="primary" (click)="addPlantSamples()">Generate samples set</button>
@@ -53,7 +85,23 @@
     <div class="row mb-2" formArrayName="plantSamples">
       <div *ngFor="let plantSample of plantSamples.controls; let i=index" class="col-md-12 form-input">
         <div [formGroupName]="i">
-          <input type="text" formControlName="sampleName">
+          <input type="text" placeholder="Sample name ranges" [class.is-invalid]="plantSampleValid(i, 'sampleName')" formControlName="sampleName">
+          <input type="text" placeholder="Sample weight" formControlName="sampleWeight">
+          <select formControlName="locationId">
+            <option *ngFor="let pos of (locations$ | async)" [value] = pos.locationId>
+              {{pos.locationName}}
+            </option>
+          </select>
+          <select formControlName="shelfPositionId">
+            <option *ngFor="let pos of (shelfPositions$ | async)" [value] = pos.shelfPositionId>
+              {{pos.shelfPositionName}}
+            </option>
+          </select>
+          <select formControlName="containerTypeId">
+            <option *ngFor="let pos of (containerType$ | async)" [value] = pos.containerTypeId>
+              {{pos.containerTypeName}}
+            </option>
+          </select>
         </div>
       </div>
     </div>
