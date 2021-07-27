@@ -34,7 +34,7 @@ export class PlantSampleAddComponent implements OnInit, OnDestroy {
   species$: Observable<ISpecies[]>;
   tissues$: Observable<ITissue[]>;
   duplications$: Observable<IDuplication[]>;
-  locations$: BehaviorSubject<ILocationType[]>;
+  locations$: BehaviorSubject<ILocation[]>;
   shelfPositions$: BehaviorSubject<IShelfPosition[]>;
   containerType$: BehaviorSubject<IContainer[]>;
   ppp = false;
@@ -48,7 +48,7 @@ export class PlantSampleAddComponent implements OnInit, OnDestroy {
               private duplicationService: DuplicationsService,
               private locationService: LocationService) {
 
-    this.locations$ = new BehaviorSubject<ILocationType[]>([]);
+    this.locations$ = new BehaviorSubject<ILocation[]>([]);
     this.shelfPositions$ = new BehaviorSubject<IShelfPosition[]>([]);
     this.containerType$ = new BehaviorSubject<IContainer[]>([]);
   }
@@ -152,11 +152,6 @@ export class PlantSampleAddComponent implements OnInit, OnDestroy {
         }));
       }
     });
-
-    return;
-    this.plantSamples.push(this.formBuilder.group({
-      sampleName: []
-    }));
   }
 
   ngOnDestroy(): void {
