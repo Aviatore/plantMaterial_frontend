@@ -1,0 +1,12 @@
+label {
+  width: 100px;
+}
+
+.is-invalid {
+  outline-color: red;
+  border-color: red;
+}
+
+select, option {
+  min-width: 50px;
+}

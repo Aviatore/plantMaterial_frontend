@@ -16,6 +16,12 @@ export class PopulationService {
     return this.httpClient.get<IPopulation[]>(Urls.GetAllPopulations);
   }
 
+  getPopulationsBySpecies(speciesId: string): Observable<IPopulation[]> {
+    return this.httpClient.get<IPopulation[]>(Urls.GetPopulationBySpecies, {
+      params: new HttpParams().set('speciesId', speciesId)
+    });
+  }
+
   getPopulation(populationId: string): Observable<IPopulation> {
     return this.httpClient.get<IPopulation>(Urls.GetAllPopulations, {
       params: new HttpParams().set('populationId', populationId)

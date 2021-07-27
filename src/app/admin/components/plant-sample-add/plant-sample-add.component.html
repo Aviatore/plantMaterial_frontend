@@ -1,0 +1,66 @@
+<div class="container">
+  <form [formGroup]="form">
+
+    <div class="row mb-2">
+      <div class="col-md-12 form-input">
+        <input type="text" placeholder="Sample name ranges" [class.is-invalid]="form.controls.sampleNameRanges.invalid && (form.controls.sampleNameRanges.touched || submitted)" formControlName="sampleNameRanges">
+      </div>
+    </div>
+
+    <div class="col-md-12 form-input">
+      <label for="speciesId">Species: </label>
+      <select id="speciesId" (change)="onSpeciesSelectionChange($event)">
+        <option value='' selected></option>
+        <option *ngFor="let pos of (species$ | async)" [value] = pos.speciesId>
+          {{pos.speciesName}}
+        </option>
+      </select>
+    </div>
+
+    <div class="col-md-12 form-input">
+      <label for="populationId">Population: </label>
+      <select id="populationId" formControlName="populationId">
+        <option *ngFor="let pos of (populations$ | async)" [value] = pos.populationId>
+          {{pos.populationName}}
+        </option>
+      </select>
+    </div>
+
+    <div class="row mb-2">
+      <div class="col-md-12">
+        <button mat-raised-button color="primary" (click)="addPlantSamples()">Generate samples set</button>
+      </div>
+    </div>
+
+    <div class="row mb-2" formArrayName="plantSamples">
+      <div *ngFor="let plantSample of plantSamples.controls; let i=index" class="col-md-12 form-input">
+        <div [formGroupName]="i">
+          <input type="text" formControlName="sampleName">
+        </div>
+      </div>
+    </div>
+
+    <!--<div class="row mb-2">
+      <div class="col-md-12 form-input">
+        <label for="speciesId">Species: </label>
+        <select id="speciesId" formControlName="speciesId">
+          <option *ngFor="let pos of (species$ | async)" [value] = pos.speciesId>
+            {{pos.speciesName}}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row mb-2">
+      <div class="col-md-12">
+        <textarea id="populationDescription" placeholder="Description" formControlName="populationDescription" rows="3"></textarea>
+      </div>
+    </div>
+
+    <div class="row mb-2">
+      <div class="col-md-12">
+        <button mat-raised-button color="primary" (click)="submit()">Submit</button>
+      </div>
+    </div>-->
+  </form>
+</div>

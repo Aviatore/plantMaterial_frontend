@@ -24,6 +24,12 @@ export const Urls = {
   RemoveLocation: 'http://localhost:5000/location/remove',
 
   GetAllPopulations: 'http://localhost:5000/populations',
+  GetPopulationBySpecies: 'http://localhost:5000/population-by-species',
   AddPopulation: 'http://localhost:5000/population/edit',
-  RemovePopulation: 'http://localhost:5000/population/remove'
+  RemovePopulation: 'http://localhost:5000/population/remove',
+
+  EditPlantSamples: 'http://localhost:5000/plant-sample/edit',
+  AddPlantSamples: 'http://localhost:5000/plant-sample/add',
+  RemovePlantSample: 'http://localhost:5000/plant-sample/remove',
+
 };

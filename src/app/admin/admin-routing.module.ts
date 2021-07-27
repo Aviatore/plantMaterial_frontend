@@ -16,6 +16,7 @@ import {LocationShowComponent} from "./components/location-show/location-show.co
 import {LocationEditComponent} from "./components/location-edit/location-edit.component";
 import {PopulationShowComponent} from "./components/population-show/population-show.component";
 import {PopulationEditComponent} from "./components/population-edit/population-edit.component";
+import {PlantSampleAddComponent} from "./components/plant-sample-add/plant-sample-add.component";
 
 const routes: Routes = [
   {
@@ -114,6 +115,10 @@ const routes: Routes = [
     path: 'population/add',
     component: PopulationEditComponent
   },
+  {
+    path: 'plant-sample/add',
+    component: PlantSampleAddComponent
+  }
 ];
 
 @NgModule({
