@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Observable, Subject} from "rxjs";
+import {BehaviorSubject, Observable, Subject} from "rxjs";
 import {Form, FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute} from "@angular/router";
 import {PopulationService} from "../../services/population.service";
@@ -8,7 +8,7 @@ import {PlantSampleService} from "../../services/plant-sample.service";
 import {IPlantSample} from "../../interfaces/IPlantSample";
 import {GuidEmpty} from "../../constants";
 import {IPopulation} from "../../interfaces/IPopulation";
-import {map} from "rxjs/operators";
+import {map, takeUntil} from "rxjs/operators";
 import {ISpecies} from "../../interfaces/ISpecies";
 import {SelectionChange} from "@angular/cdk/collections";
 import {ITissue} from "../../interfaces/ITissue";
@@ -19,6 +19,7 @@ import {ILocation} from "../../interfaces/ILocation";
 import {LocationService} from "../../services/location.service";
 import {IShelfPosition} from "../../interfaces/IShelfPosition";
 import {IContainer} from "../../interfaces/IContainer";
+import {ILocationType} from "../../interfaces/ILocationType";
 
 @Component({
   selector: 'app-plant-sample-add',
@@ -33,9 +34,9 @@ export class PlantSampleAddComponent implements OnInit, OnDestroy {
   species$: Observable<ISpecies[]>;
   tissues$: Observable<ITissue[]>;
   duplications$: Observable<IDuplication[]>;
-  locations$: Observable<ILocation[]>;
-  shelfPositions$: Observable<IShelfPosition[]>;
-  containerType$: Observable<IContainer[]>;
+  locations$: BehaviorSubject<ILocationType[]>;
+  shelfPositions$: BehaviorSubject<IShelfPosition[]>;
+  containerType$: BehaviorSubject<IContainer[]>;
   ppp = false;
 
   constructor(private formBuilder: FormBuilder,
@@ -45,16 +46,42 @@ export class PlantSampleAddComponent implements OnInit, OnDestroy {
               private speciesService: SpeciesService,
               private tissueService: TissueService,
               private duplicationService: DuplicationsService,
-              private locationService: LocationService) { }
+              private locationService: LocationService) {
+
+    this.locations$ = new BehaviorSubject<ILocationType[]>([]);
+    this.shelfPositions$ = new BehaviorSubject<IShelfPosition[]>([]);
+    this.containerType$ = new BehaviorSubject<IContainer[]>([]);
+  }
 
   ngOnInit(): void {
+    this.componentDestroyed = new Subject();
     this.populations$ = new Observable<IPopulation[]>(subscriber => subscriber.next(null));
     this.species$ = this.speciesService.getAllSpecies().pipe(map(p => p.sort()));
     this.tissues$ = this.tissueService.getAllTissues().pipe(map(p => p.sort()));
     this.duplications$ = this.duplicationService.getAllDuplications().pipe(map(p => p.sort()));
-    this.locations$ = this.locationService.getAllLocations().pipe(map(p => p.sort()));
-    this.shelfPositions$ = this.locationService.getAllShelfPositions().pipe(map(p => p.sort()));
-    this.containerType$ = this.locationService.getAllContainers().pipe(map(p => p.sort()));
+    this.locationService.getAllLocations().pipe(
+      takeUntil(this.componentDestroyed),
+      map(p => p.sort())
+    ).subscribe({
+      next: value => this.locations$.next(value)
+    });
+
+    this.locationService.getAllShelfPositions().pipe(
+      takeUntil(this.componentDestroyed),
+      map(p => p.sort())
+    ).subscribe({
+      next: value => this.shelfPositions$.next(value)
+    })
+
+    this.locationService.getAllContainers().pipe(
+      takeUntil(this.componentDestroyed),
+      map(p => p.sort())
+    ).subscribe({
+      next: value => {
+        console.log(`location ${value}`);
+        this.containerType$.next(value);
+      }
+    })
 
     this.form = this.formBuilder.group({
       populationId: [''],
@@ -133,6 +160,8 @@ export class PlantSampleAddComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.componentDestroyed.next();
+    this.componentDestroyed.complete();
   }
 
 }
