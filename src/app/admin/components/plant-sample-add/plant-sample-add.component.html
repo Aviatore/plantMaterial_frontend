@@ -18,6 +18,15 @@
     </div>
 
     <div class="col-md-12 form-input">
+      <label for="tissueId">Tissue: </label>
+      <select id="tissueId" formControlName="tissueId">
+        <option *ngFor="let pos of (tissues$ | async)" [value] = pos.tissueId>
+          {{pos.tissueName}}
+        </option>
+      </select>
+    </div>
+
+    <div class="col-md-12 form-input">
       <label for="populationId">Population: </label>
       <select id="populationId" formControlName="populationId">
         <option *ngFor="let pos of (populations$ | async)" [value] = pos.populationId>
