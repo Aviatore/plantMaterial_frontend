@@ -59,11 +59,10 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
               private locationService: LocationService) { }
 
   ngOnInit(): void {
-    this.bool = [0, 1, 2];
+    this.bool = [0, 1];
     this.boolMap = {
       0: 'And',
-      1: 'Or',
-      2: 'Not'
+      1: 'Not'
     }
     this.componentDestroyed = new Subject();
     this.filters = {
@@ -142,5 +141,17 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
 
   removeFilter(index: number): void {
     this.searchFilters.removeAt(index);
+  }
+
+  searchPlantSamples(): void {
+    this.plantSampleService.getPlantSamples(JSON.stringify(this.searchFilters.getRawValue())).subscribe({
+      next: value => {
+        console.log(JSON.stringify(value));
+      }
+    });
+  }
+
+  clearSearchResults(): void {
+    this.searchResults.clear();
   }
 }

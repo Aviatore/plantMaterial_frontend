@@ -32,4 +32,10 @@ export class PlantSampleService {
       observe: 'response'
     });
   }
+
+  getPlantSamples(plantSampleFilters: string): Observable<IPlantSample[]> {
+    return this.httpClient.post<IPlantSample[]>(Urls.GetPlantSample, plantSampleFilters, {
+      headers: new HttpHeaders().set('Content-Type', 'application/json')
+    });
+  }
 }
