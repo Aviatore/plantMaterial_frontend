@@ -31,6 +31,8 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
   filters = {};
   filtersMap = {};
   filterKeys: string[];
+  bool: number[];
+  boolMap: object;
 
   populations$: Observable<IPopulation[]>;
   species$: Observable<ISpecies[]>;
@@ -57,6 +59,12 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
               private locationService: LocationService) { }
 
   ngOnInit(): void {
+    this.bool = [0, 1, 2];
+    this.boolMap = {
+      0: 'And',
+      1: 'Or',
+      2: 'Not'
+    }
     this.componentDestroyed = new Subject();
     this.filters = {
       population: this.populationTemp,

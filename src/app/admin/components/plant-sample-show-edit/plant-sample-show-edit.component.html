@@ -4,6 +4,12 @@
     <div class="row mb-2" formArrayName="searchFilters">
       <div *ngFor="let param of searchFilters.controls; let i=index" class="col-md-12 form-input">
         <div [formGroupName]="i">
+          <select formControlName="bool">
+            <option *ngFor="let b of bool" [value] = b>
+              {{boolMap[b]}}
+            </option>
+          </select>
+
           <select (change)="onFilterSelectionChange($event)" #element formControlName="filter">
             <option value='' selected>-- Select filter --</option>
             <option *ngFor="let filterKey of filterKeys.sort()" [value] = filterKey>
