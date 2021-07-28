@@ -18,6 +18,7 @@
                   {{pos.populationName}}
                 </option>
               </select>
+              <button (click)="addFilter()" class="btn btn-info btn-sm">Add filter</button>
             </ng-container>
 
             <ng-container *ngSwitchCase="'tissue'">
@@ -26,6 +27,7 @@
                   {{pos.tissueName}}
                 </option>
               </select>
+              <button (click)="addFilter()" class="btn btn-info btn-sm">Add filter</button>
             </ng-container>
 
             <ng-container *ngSwitchCase="'duplication'">
@@ -34,6 +36,7 @@
                   {{pos.duplicationName}}
                 </option>
               </select>
+              <button (click)="addFilter()" class="btn btn-info btn-sm">Add filter</button>
             </ng-container>
 
             <ng-container *ngSwitchCase="'location'">
@@ -42,6 +45,7 @@
                   {{pos.locationName}}
                 </option>
               </select>
+              <button (click)="addFilter()" class="btn btn-info btn-sm">Add filter</button>
             </ng-container>
 
             <ng-container *ngSwitchCase="'shelfPosition'">
@@ -50,6 +54,7 @@
                   {{pos.shelfPositionName}}
                 </option>
               </select>
+              <button (click)="addFilter()" class="btn btn-info btn-sm">Add filter</button>
             </ng-container>
 
             <ng-container *ngSwitchCase="'containerType'">
@@ -58,6 +63,7 @@
                   {{pos.containerTypeName}}
                 </option>
               </select>
+              <button (click)="addFilter()" class="btn btn-info btn-sm">Add filter</button>
             </ng-container>
           </ng-container>
         </div>

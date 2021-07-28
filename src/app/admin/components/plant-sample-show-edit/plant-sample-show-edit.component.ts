@@ -113,4 +113,17 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
   onFilterSelectionChange(event): void {
 
   }
+
+  addFilter(): void {
+    this.searchFilters.push(this.formBuilder.group({
+      bool: [boolEnum.and],
+      filter: [''],
+      populationId: [GuidEmpty],
+      tissueId: [GuidEmpty],
+      duplicationId: [GuidEmpty],
+      locationId: [GuidEmpty],
+      shelfPositionId: [GuidEmpty],
+      containerTypeId: [GuidEmpty]
+    }))
+  }
 }
