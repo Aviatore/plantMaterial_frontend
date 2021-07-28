@@ -25,6 +25,7 @@
                 </option>
               </select>
               <button (click)="addFilter()" class="btn btn-info btn-sm">Add filter</button>
+              <button (click)="removeFilter(i)" class="btn btn-info btn-sm" *ngIf="i > 0">Remove filter</button>
             </ng-container>
 
             <ng-container *ngSwitchCase="'tissue'">
@@ -34,6 +35,7 @@
                 </option>
               </select>
               <button (click)="addFilter()" class="btn btn-info btn-sm">Add filter</button>
+              <button (click)="removeFilter(i)" class="btn btn-info btn-sm" *ngIf="i > 0">Remove filter</button>
             </ng-container>
 
             <ng-container *ngSwitchCase="'duplication'">
@@ -43,6 +45,7 @@
                 </option>
               </select>
               <button (click)="addFilter()" class="btn btn-info btn-sm">Add filter</button>
+              <button (click)="removeFilter(i)" class="btn btn-info btn-sm" *ngIf="i > 0">Remove filter</button>
             </ng-container>
 
             <ng-container *ngSwitchCase="'location'">
@@ -52,6 +55,7 @@
                 </option>
               </select>
               <button (click)="addFilter()" class="btn btn-info btn-sm">Add filter</button>
+              <button (click)="removeFilter(i)" class="btn btn-info btn-sm" *ngIf="i > 0">Remove filter</button>
             </ng-container>
 
             <ng-container *ngSwitchCase="'shelfPosition'">
@@ -61,6 +65,7 @@
                 </option>
               </select>
               <button (click)="addFilter()" class="btn btn-info btn-sm">Add filter</button>
+              <button (click)="removeFilter(i)" class="btn btn-info btn-sm" *ngIf="i > 0">Remove filter</button>
             </ng-container>
 
             <ng-container *ngSwitchCase="'containerType'">
@@ -70,10 +75,14 @@
                 </option>
               </select>
               <button (click)="addFilter()" class="btn btn-info btn-sm">Add filter</button>
+              <button (click)="removeFilter(i)" class="btn btn-info btn-sm" *ngIf="i > 0">Remove filter</button>
             </ng-container>
           </ng-container>
         </div>
       </div>
+
+      <button (click)="addFilter()" class="btn btn-info btn-sm action-button">Search</button>
+      <button (click)="addFilter()" class="btn btn-warning btn-sm action-button">Clear</button>
     </div>
 
 

@@ -20,10 +20,6 @@ input, select {
   margin-right: 5px;
 }
 
-.add-filter-button {
-  height: 20px;
-  width: 50px;
-  border-radius: 5px;
-  font-size: 0.7em;
-  border: black 1px solid;
+.action-button {
+  margin-left: 15px;
 }

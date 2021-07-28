@@ -134,4 +134,8 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
       containerTypeId: [GuidEmpty]
     }))
   }
+
+  removeFilter(index: number): void {
+    this.searchFilters.removeAt(index);
+  }
 }
