@@ -84,7 +84,7 @@
 
     <div class="row mb-2">
       <div class="col-md-12">
-        <button mat-raised-button color="primary" (click)="addPlantSamples()">Generate samples set</button>
+        <button (click)="addPlantSamples()" class="btn btn-info">Generate samples set</button>
       </div>
     </div>
 
@@ -112,7 +112,7 @@
           </div>
         </div>
 
-        <button mat-raised-button color="primary" (click)="submit()" style="margin-left: 15px; margin-top: 10px;">Submit</button>
+        <button (click)="submit()" style="margin-left: 15px; margin-top: 10px;" [disabled]="submitButtonDisable" class="btn btn-info">Submit</button>
       </div>
     </div>
 

@@ -37,7 +37,7 @@ export class PlantSampleAddComponent implements OnInit, OnDestroy {
   locations$: BehaviorSubject<ILocation[]>;
   shelfPositions$: BehaviorSubject<IShelfPosition[]>;
   containerType$: BehaviorSubject<IContainer[]>;
-  ppp = false;
+  submitButtonDisable = false;
 
   constructor(private formBuilder: FormBuilder,
               private activatedRoute: ActivatedRoute,
@@ -100,12 +100,14 @@ export class PlantSampleAddComponent implements OnInit, OnDestroy {
   }
 
   submit(): void {
+    this.submitButtonDisable = true;
     this.submitted = true;
     console.log(this.plantSamples.getRawValue());
 
     this.plantSampleService.addPlantSample(JSON.stringify(this.plantSamples.getRawValue())).pipe(takeUntil(this.componentDestroyed)).subscribe({
       next: value => {
         console.log(value.body);
+        this.plantSamples.clear();
       },
       error: err => console.log(err)
     });
@@ -130,6 +132,7 @@ export class PlantSampleAddComponent implements OnInit, OnDestroy {
   }
 
   addPlantSamples(): void {
+    this.plantSamples.clear();
     const nameRanges = this.form.controls.sampleNameRanges.value.split(',');
     nameRanges.forEach(value => {
       const valueSplitted = value.split('-');
