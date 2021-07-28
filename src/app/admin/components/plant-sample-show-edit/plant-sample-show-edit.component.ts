@@ -105,12 +105,17 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
           shelfPositionId: [GuidEmpty],
           containerTypeId: [GuidEmpty]
         })
-      ])
+      ]),
+      searchResults: this.formBuilder.array([])
     });
   }
 
   get searchFilters(): FormArray {
     return this.form.get('searchFilters') as FormArray;
+  }
+
+  get searchResults(): FormArray {
+    return this.form.get('searchResults') as FormArray;
   }
 
   ngOnDestroy(): void {

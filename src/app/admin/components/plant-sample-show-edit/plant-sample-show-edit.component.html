@@ -85,6 +85,12 @@
       <button (click)="addFilter()" class="btn btn-warning btn-sm action-button">Clear</button>
     </div>
 
+    <div class="row mb-2" formArrayName="searchResults">
+      <div *ngFor="let result of searchResults.controls; let i=index" class="col-md-12 form-input">
+        <div [formGroupName]="i">
+        </div>
+      </div>
+    </div>
 
     <!--<div class="row mb-2">
       <div class="col-md-12 form-input">
