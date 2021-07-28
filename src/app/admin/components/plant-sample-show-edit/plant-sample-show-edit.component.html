@@ -11,60 +11,55 @@
             </option>
           </select>
 
-          <ng-container *ngIf="element.value == 'population'; then populationTemplate"></ng-container>
-          <ng-container *ngIf="element.value == 'tissue'; then tissueTemplate"></ng-container>
-          <ng-container *ngIf="element.value == 'duplication'; then duplicationTemplate"></ng-container>
-          <ng-container *ngIf="element.value == 'location'; then locationTemplate"></ng-container>
-          <ng-container *ngIf="element.value == 'shelfPosition'; then shelfPositionTemplate"></ng-container>
-          <ng-container *ngIf="element.value == 'containerType'; then containerTypeTemplate"></ng-container>
+          <ng-container [ngSwitch]="element.value">
+            <ng-container *ngSwitchCase="'population'">
+              <select formControlName="populationId">
+                <option *ngFor="let pos of (populations$ | async)" [value] = pos.populationId>
+                  {{pos.populationName}}
+                </option>
+              </select>
+            </ng-container>
 
-          <ng-template #populationTemplate>
-            <select formControlName="populationId">
-              <option *ngFor="let pos of (populations$ | async)" [value] = pos.populationId>
-                {{pos.populationName}}
-              </option>
-            </select>
-          </ng-template>
+            <ng-container *ngSwitchCase="'tissue'">
+              <select formControlName="tissueId">
+                <option *ngFor="let pos of (tissues$ | async)" [value] = pos.tissueId>
+                  {{pos.tissueName}}
+                </option>
+              </select>
+            </ng-container>
 
-          <ng-template #tissueTemplate>
-            <select formControlName="tissueId">
-              <option *ngFor="let pos of (tissues$ | async)" [value] = pos.tissueId>
-                {{pos.tissueName}}
-              </option>
-            </select>
-          </ng-template>
+            <ng-container *ngSwitchCase="'duplication'">
+              <select formControlName="duplicationId">
+                <option *ngFor="let pos of (duplications$ | async)" [value] = pos.duplicationId>
+                  {{pos.duplicationName}}
+                </option>
+              </select>
+            </ng-container>
 
-          <ng-template #duplicationTemplate>
-            <select formControlName="duplicationId">
-              <option *ngFor="let pos of (duplications$ | async)" [value] = pos.duplicationId>
-                {{pos.duplicationName}}
-              </option>
-            </select>
-          </ng-template>
+            <ng-container *ngSwitchCase="'location'">
+              <select formControlName="locationId">
+                <option *ngFor="let pos of (locations$ | async)" [value] = pos.locationId>
+                  {{pos.locationName}}
+                </option>
+              </select>
+            </ng-container>
 
-          <ng-template #locationTemplate>
-            <select formControlName="locationId">
-              <option *ngFor="let pos of (locations$ | async)" [value] = pos.locationId>
-                {{pos.locationName}}
-              </option>
-            </select>
-          </ng-template>
+            <ng-container *ngSwitchCase="'shelfPosition'">
+              <select formControlName="shelfPositionId">
+                <option *ngFor="let pos of (shelfPositions$ | async)" [value] = pos.shelfPositionId>
+                  {{pos.shelfPositionName}}
+                </option>
+              </select>
+            </ng-container>
 
-          <ng-template #shelfPositionTemplate>
-            <select formControlName="shelfPositionId">
-              <option *ngFor="let pos of (shelfPositions$ | async)" [value] = pos.shelfPositionId>
-                {{pos.shelfPositionName}}
-              </option>
-            </select>
-          </ng-template>
-
-          <ng-template #containerTypeTemplate>
-            <select formControlName="containerTypeId">
-              <option *ngFor="let pos of (containerType$ | async)" [value] = pos.containerTypeId>
-                {{pos.containerTypeName}}
-              </option>
-            </select>
-          </ng-template>
+            <ng-container *ngSwitchCase="'containerType'">
+              <select formControlName="containerTypeId">
+                <option *ngFor="let pos of (containerType$ | async)" [value] = pos.containerTypeId>
+                  {{pos.containerTypeName}}
+                </option>
+              </select>
+            </ng-container>
+          </ng-container>
         </div>
       </div>
     </div>
