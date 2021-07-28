@@ -17,6 +17,7 @@ import {LocationEditComponent} from "./components/location-edit/location-edit.co
 import {PopulationShowComponent} from "./components/population-show/population-show.component";
 import {PopulationEditComponent} from "./components/population-edit/population-edit.component";
 import {PlantSampleAddComponent} from "./components/plant-sample-add/plant-sample-add.component";
+import {PlantSampleShowEditComponent} from "./components/plant-sample-show-edit/plant-sample-show-edit.component";
 
 const routes: Routes = [
   {
@@ -118,6 +119,10 @@ const routes: Routes = [
   {
     path: 'plant-sample/add',
     component: PlantSampleAddComponent
+  },
+  {
+    path: 'plant-sample/show',
+    component: PlantSampleShowEditComponent
   }
 ];
 

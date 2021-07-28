@@ -31,7 +31,7 @@ import {MatOptionModule} from "@angular/material/core";
 import {MatSelectModule} from "@angular/material/select";
 import { PopulationShowComponent } from './components/population-show/population-show.component';
 import { PopulationEditComponent } from './components/population-edit/population-edit.component';
-import { PlantSampleEditComponent } from './components/plant-sample-edit/plant-sample-edit.component';
+import { PlantSampleShowEditComponent } from './components/plant-sample-show-edit/plant-sample-show-edit.component';
 import { PlantSampleAddComponent } from './components/plant-sample-add/plant-sample-add.component';
 
 
@@ -54,7 +54,7 @@ import { PlantSampleAddComponent } from './components/plant-sample-add/plant-sam
     LocationEditComponent,
     PopulationShowComponent,
     PopulationEditComponent,
-    PlantSampleEditComponent,
+    PlantSampleShowEditComponent,
     PlantSampleAddComponent
   ],
   imports: [

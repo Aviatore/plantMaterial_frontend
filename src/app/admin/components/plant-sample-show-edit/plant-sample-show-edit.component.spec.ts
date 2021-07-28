@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PlantSampleEditComponent } from './plant-sample-edit.component';
+import { PlantSampleShowEditComponent } from './plant-sample-show-edit.component';
 
 describe('PlantSampleEditComponent', () => {
-  let component: PlantSampleEditComponent;
-  let fixture: ComponentFixture<PlantSampleEditComponent>;
+  let component: PlantSampleShowEditComponent;
+  let fixture: ComponentFixture<PlantSampleShowEditComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PlantSampleEditComponent ]
+      declarations: [ PlantSampleShowEditComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PlantSampleEditComponent);
+    fixture = TestBed.createComponent(PlantSampleShowEditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

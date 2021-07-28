@@ -1,0 +1,190 @@
+<div class="container">
+  <form [formGroup]="form">
+
+    <div class="row mb-2" formArrayName="searchFilters">
+      <div *ngFor="let param of searchFilters.controls; let i=index" class="col-md-12 form-input">
+        <div [formGroupName]="i">
+          <select (change)="onFilterSelectionChange($event)" #element formControlName="filter">
+            <option value='' selected>-- Select filter --</option>
+            <option *ngFor="let filterKey of filterKeys.sort()" [value] = filterKey>
+              {{filtersMap[filterKey]}}
+            </option>
+          </select>
+
+          <ng-container *ngIf="element.value == 'population'; then populationTemplate"></ng-container>
+          <ng-container *ngIf="element.value == 'tissue'; then tissueTemplate"></ng-container>
+          <ng-container *ngIf="element.value == 'duplication'; then duplicationTemplate"></ng-container>
+          <ng-container *ngIf="element.value == 'location'; then locationTemplate"></ng-container>
+          <ng-container *ngIf="element.value == 'shelfPosition'; then shelfPositionTemplate"></ng-container>
+          <ng-container *ngIf="element.value == 'containerType'; then containerTypeTemplate"></ng-container>
+
+          <ng-template #populationTemplate>
+            <select formControlName="populationId">
+              <option *ngFor="let pos of (populations$ | async)" [value] = pos.populationId>
+                {{pos.populationName}}
+              </option>
+            </select>
+          </ng-template>
+
+          <ng-template #tissueTemplate>
+            <select formControlName="tissueId">
+              <option *ngFor="let pos of (tissues$ | async)" [value] = pos.tissueId>
+                {{pos.tissueName}}
+              </option>
+            </select>
+          </ng-template>
+
+          <ng-template #duplicationTemplate>
+            <select formControlName="duplicationId">
+              <option *ngFor="let pos of (duplications$ | async)" [value] = pos.duplicationId>
+                {{pos.duplicationName}}
+              </option>
+            </select>
+          </ng-template>
+
+          <ng-template #locationTemplate>
+            <select formControlName="locationId">
+              <option *ngFor="let pos of (locations$ | async)" [value] = pos.locationId>
+                {{pos.locationName}}
+              </option>
+            </select>
+          </ng-template>
+
+          <ng-template #shelfPositionTemplate>
+            <select formControlName="shelfPositionId">
+              <option *ngFor="let pos of (shelfPositions$ | async)" [value] = pos.shelfPositionId>
+                {{pos.shelfPositionName}}
+              </option>
+            </select>
+          </ng-template>
+
+          <ng-template #containerTypeTemplate>
+            <select formControlName="containerTypeId">
+              <option *ngFor="let pos of (containerType$ | async)" [value] = pos.containerTypeId>
+                {{pos.containerTypeName}}
+              </option>
+            </select>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+
+
+    <!--<div class="row mb-2">
+      <div class="col-md-12 form-input">
+        <input type="text" placeholder="Sample name ranges" [class.is-invalid]="form.controls.sampleNameRanges.invalid && (form.controls.sampleNameRanges.touched || submitted)" formControlName="sampleNameRanges">
+      </div>
+    </div>
+
+    <div class="col-md-12 form-input">
+      <label for="speciesId">Species: </label>
+      <select id="speciesId" (change)="onSpeciesSelectionChange($event)">
+        <option value='' selected></option>
+        <option *ngFor="let pos of (species$ | async)" [value] = pos.speciesId>
+          {{pos.speciesName}}
+        </option>
+      </select>
+    </div>
+
+    <div class="col-md-12 form-input">
+      <label for="populationId">Population: </label>
+      <select id="populationId" formControlName="populationId">
+        <option *ngFor="let pos of (populations$ | async)" [value] = pos.populationId>
+          {{pos.populationName}}
+        </option>
+      </select>
+    </div>
+
+    <div class="col-md-12 form-input">
+      <label for="tissueId">Tissue: </label>
+      <select id="tissueId" formControlName="tissueId">
+        <option *ngFor="let pos of (tissues$ | async)" [value] = pos.tissueId>
+          {{pos.tissueName}}
+        </option>
+      </select>
+    </div>
+
+    <div class="row mb-2">
+      <div class="col-md-12 form-input">
+        <input type="text" placeholder="Sample weight" formControlName="sampleWeight">
+      </div>
+    </div>
+
+    <div class="col-md-12 form-input">
+      <label for="duplicationId">Duplication: </label>
+      <select id="duplicationId" formControlName="duplicationId">
+        <option *ngFor="let pos of (duplications$ | async)" [value] = pos.duplicationId>
+          {{pos.duplicationName}}
+        </option>
+      </select>
+    </div>
+
+    <div class="col-md-12 form-input">
+      <label for="locationId">Location: </label>
+      <select id="locationId" formControlName="locationId">
+        <option *ngFor="let pos of (locations$ | async)" [value] = pos.locationId>
+          {{pos.locationName}}
+        </option>
+      </select>
+    </div>
+
+    <div class="col-md-12 form-input">
+      <label for="shelfPositionId">Shelf position: </label>
+      <select id="shelfPositionId" formControlName="shelfPositionId">
+        <option *ngFor="let pos of (shelfPositions$ | async)" [value] = pos.shelfPositionId>
+          {{pos.shelfPositionName}}
+        </option>
+      </select>
+    </div>
+
+    <div class="col-md-12 form-input">
+      <label for="containerTypeId">Container type: </label>
+      <select id="containerTypeId" formControlName="containerTypeId">
+        <option *ngFor="let pos of (containerType$ | async)" [value] = pos.containerTypeId>
+          {{pos.containerTypeName}}
+        </option>
+      </select>
+    </div>
+
+    <div class="col-md-12 form-input">
+      <label for="collectionDate">Collection date: </label>
+      <input type="date" id="collectionDate" formControlName="collectionDate">
+    </div>
+
+    <div class="row mb-2">
+      <div class="col-md-12">
+        <button (click)="addPlantSamples()" class="btn btn-info">Generate samples set</button>
+      </div>
+    </div>
+
+    <div class="row mb-2" formArrayName="plantSamples">
+      <div *ngIf="plantSamples.length > 0">
+        <div *ngFor="let plantSample of plantSamples.controls; let i=index" class="col-md-12 form-input">
+          <div [formGroupName]="i">
+            <input type="text" placeholder="Sample name ranges" [class.is-invalid]="plantSampleValid(i, 'sampleName')" formControlName="sampleName">
+            <input type="text" placeholder="Sample weight" formControlName="sampleWeight">
+            <select formControlName="locationId">
+              <option *ngFor="let pos of (locations$ | async)" [value] = pos.locationId>
+                {{pos.locationName}}
+              </option>
+            </select>
+            <select formControlName="shelfPositionId">
+              <option *ngFor="let pos of (shelfPositions$ | async)" [value] = pos.shelfPositionId>
+                {{pos.shelfPositionName}}
+              </option>
+            </select>
+            <select formControlName="containerTypeId">
+              <option *ngFor="let pos of (containerType$ | async)" [value] = pos.containerTypeId>
+                {{pos.containerTypeName}}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <button (click)="submit()" style="margin-left: 15px; margin-top: 10px;" [disabled]="submitButtonDisable" class="btn btn-info">Submit</button>
+      </div>
+    </div>-->
+  </form>
+</div>
+
+
