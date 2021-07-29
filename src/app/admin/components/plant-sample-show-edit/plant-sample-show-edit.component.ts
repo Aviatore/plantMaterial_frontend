@@ -15,7 +15,7 @@ import {SpeciesService} from "../../services/species.service";
 import {TissueService} from "../../services/tissue.service";
 import {DuplicationsService} from "../../services/duplications.service";
 import {LocationService} from "../../services/location.service";
-import {map} from "rxjs/operators";
+import {map, takeUntil} from "rxjs/operators";
 import {boolEnum} from "../../enums/boolEnum";
 import {GuidEmpty} from "../../constants";
 import {MatDialog} from "@angular/material/dialog";
@@ -37,13 +37,13 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
   boolMap: object;
   columnShowFilters: FormGroup;
 
-  populations$: Observable<IPopulation[]>;
-  species$: Observable<ISpecies[]>;
-  tissues$: Observable<ITissue[]>;
-  duplications$: Observable<IDuplication[]>;
-  locations$: Observable<ILocation[]>;
-  shelfPositions$: Observable<IShelfPosition[]>;
-  containerType$: Observable<IContainer[]>;
+  populations$: BehaviorSubject<IPopulation[]>;
+  species$: BehaviorSubject<ISpecies[]>;
+  tissues$: BehaviorSubject<ITissue[]>;
+  duplications$: BehaviorSubject<IDuplication[]>;
+  locations$: BehaviorSubject<ILocation[]>;
+  shelfPositions$: BehaviorSubject<IShelfPosition[]>;
+  containerType$: BehaviorSubject<IContainer[]>;
 
   @ViewChild('populationTemplate', {read: TemplateRef}) populationTemp: TemplateRef<any>;
   @ViewChild('tissueTemplate', {read: TemplateRef}) tissueTemp: TemplateRef<any>;
@@ -101,13 +101,63 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
 
     this.filterKeys = Object.keys(this.filters);
 
-    this.populations$ = this.populationService.getAllPopulations().pipe(map(p => p.sort()));
-    this.species$ = this.speciesService.getAllSpecies().pipe(map(p => p.sort()));
-    this.tissues$ = this.tissueService.getAllTissues().pipe(map(p => p.sort()));
-    this.duplications$ = this.duplicationService.getAllDuplications().pipe(map(p => p.sort()));
-    this.locations$ = this.locationService.getAllLocations().pipe(map(p => p.sort()));
-    this.shelfPositions$ = this.locationService.getAllShelfPositions().pipe(map(p => p.sort()));
-    this.containerType$ = this.locationService.getAllContainers().pipe(map(p => p.sort()));
+    // this.populations$ = this.populationService.getAllPopulations().pipe(map(p => p.sort()));
+    // this.species$ = this.speciesService.getAllSpecies().pipe(map(p => p.sort()));
+    // this.tissues$ = this.tissueService.getAllTissues().pipe(map(p => p.sort()));
+    // this.duplications$ = this.duplicationService.getAllDuplications().pipe(map(p => p.sort()));
+    // this.locations$ = this.locationService.getAllLocations().pipe(map(p => p.sort()));
+    // this.shelfPositions$ = this.locationService.getAllShelfPositions().pipe(map(p => p.sort()));
+    // this.containerType$ = this.locationService.getAllContainers().pipe(map(p => p.sort()));
+    this.locationService.getAllLocations().pipe(
+      takeUntil(this.componentDestroyed),
+      map(p => p.sort())
+    ).subscribe({
+      next: value => this.locations$.next(value)
+    });
+
+    this.locationService.getAllShelfPositions().pipe(
+      takeUntil(this.componentDestroyed),
+      map(p => p.sort())
+    ).subscribe({
+      next: value => this.shelfPositions$.next(value)
+    });
+
+    this.locationService.getAllContainers().pipe(
+      takeUntil(this.componentDestroyed),
+      map(p => p.sort())
+    ).subscribe({
+      next: value => {
+        this.containerType$.next(value);
+      }
+    });
+
+    this.populationService.getAllPopulations().pipe(
+      takeUntil(this.componentDestroyed),
+      map(p => p.sort())
+    ).subscribe({
+      next: value => this.populations$.next(value)
+    });
+
+    this.speciesService.getAllSpecies().pipe(
+      takeUntil(this.componentDestroyed),
+      map(p => p.sort())
+    ).subscribe({
+      next: value => this.species$.next(value)
+    });
+
+    this.tissueService.getAllTissues().pipe(
+      takeUntil(this.componentDestroyed),
+      map(p => p.sort())
+    ).subscribe({
+      next: value => this.tissues$.next(value)
+    });
+
+    this.duplicationService.getAllDuplications().pipe(
+      takeUntil(this.componentDestroyed),
+      map(p => p.sort())
+    ).subscribe({
+      next: value => this.duplications$.next(value)
+    });
 
     this.form = this.formBuilder.group({
       searchFilters: this.formBuilder.array([
