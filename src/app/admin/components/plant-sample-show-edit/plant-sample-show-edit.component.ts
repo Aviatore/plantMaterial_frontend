@@ -165,6 +165,7 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
       next: value => {
         value.forEach(plantSample => {
           this.searchResults.push(this.formBuilder.group({
+            edit: [true],
             sampleName: [{value: plantSample.sampleName, disabled: true}],
             collectionDate: [{value: plantSample.collectionDate, disabled: true}],
             populationId: [{value: plantSample.populationId, disabled: true}],

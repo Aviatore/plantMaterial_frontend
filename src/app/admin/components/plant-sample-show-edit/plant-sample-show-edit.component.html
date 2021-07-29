@@ -89,7 +89,10 @@
     <div class="row mb-2" formArrayName="searchResults">
       <div *ngFor="let result of searchResults.controls; let i=index" class="col-md-12 form-input">
         <div [formGroupName]="i">
+          <input type="checkbox" formControlName="edit">
           <input type="text" formControlName="sampleName" [hidden]="columnShowFilters.controls.showPopulation.value === false">
+          <input type="date" formControlName="collectionDate" [hidden]="columnShowFilters.controls.showPopulation.value === false">
+
         </div>
       </div>
     </div>
