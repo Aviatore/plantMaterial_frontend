@@ -33,6 +33,9 @@ import { PopulationShowComponent } from './components/population-show/population
 import { PopulationEditComponent } from './components/population-edit/population-edit.component';
 import { PlantSampleShowEditComponent } from './components/plant-sample-show-edit/plant-sample-show-edit.component';
 import { PlantSampleAddComponent } from './components/plant-sample-add/plant-sample-add.component';
+import { PlantSampleColumnCheckerComponent } from './modals/plant-sample-column-checker/plant-sample-column-checker.component';
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MatDialogModule} from "@angular/material/dialog";
 
 
 @NgModule({
@@ -55,7 +58,8 @@ import { PlantSampleAddComponent } from './components/plant-sample-add/plant-sam
     PopulationShowComponent,
     PopulationEditComponent,
     PlantSampleShowEditComponent,
-    PlantSampleAddComponent
+    PlantSampleAddComponent,
+    PlantSampleColumnCheckerComponent
   ],
   imports: [
     CommonModule,
@@ -65,13 +69,15 @@ import { PlantSampleAddComponent } from './components/plant-sample-add/plant-sam
     MatSortModule,
     MatTooltipModule,
     MatPaginatorModule,
-    AdminRoutingModule,
     ReactiveFormsModule,
     MatChipsModule,
     MatIconModule,
     MatButtonModule,
     MatOptionModule,
-    MatSelectModule
+    MatSelectModule,
+    MatCheckboxModule,
+    MatDialogModule,
+    AdminRoutingModule
   ],
   exports: [
     AdminComponent

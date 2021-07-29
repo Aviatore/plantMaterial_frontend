@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {BehaviorSubject, Observable, Subject} from "rxjs";
-import {FormArray, FormBuilder, FormGroup} from "@angular/forms";
+import {Form, FormArray, FormBuilder, FormGroup} from "@angular/forms";
 import {ISpecies} from "../../interfaces/ISpecies";
 import {IPopulation} from "../../interfaces/IPopulation";
 import {ITissue} from "../../interfaces/ITissue";
@@ -18,6 +18,8 @@ import {LocationService} from "../../services/location.service";
 import {map} from "rxjs/operators";
 import {boolEnum} from "../../enums/boolEnum";
 import {GuidEmpty} from "../../constants";
+import {MatDialog} from "@angular/material/dialog";
+import {PlantSampleColumnCheckerComponent} from "../../modals/plant-sample-column-checker/plant-sample-column-checker.component";
 
 @Component({
   selector: 'app-plant-sample-edit',
@@ -33,6 +35,7 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
   filterKeys: string[];
   bool: number[];
   boolMap: object;
+  columnShowFilters: FormGroup;
 
   populations$: Observable<IPopulation[]>;
   species$: Observable<ISpecies[]>;
@@ -56,9 +59,23 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
               private speciesService: SpeciesService,
               private tissueService: TissueService,
               private duplicationService: DuplicationsService,
-              private locationService: LocationService) { }
+              private locationService: LocationService,
+              private dialog: MatDialog) { }
 
   ngOnInit(): void {
+    this.columnShowFilters = this.formBuilder.group({
+      showSampleName: [false],
+      showCollectionDate: [false],
+      showPopulation: [true],
+      showTissue: [false],
+      showDuplication: [false],
+      showPhenotype: [false],
+      showSampleWeight: [false],
+      showLocation: [false],
+      showShelfPosition: [false],
+      showContainerType: [false]
+    });
+
     this.bool = [0, 1];
     this.boolMap = {
       0: 'And',
@@ -146,12 +163,41 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
   searchPlantSamples(): void {
     this.plantSampleService.getPlantSamples(JSON.stringify(this.searchFilters.getRawValue())).subscribe({
       next: value => {
-        console.log(JSON.stringify(value));
+        value.forEach(plantSample => {
+          this.searchResults.push(this.formBuilder.group({
+            sampleName: [{value: plantSample.sampleName, disabled: true}],
+            collectionDate: [{value: plantSample.collectionDate, disabled: true}],
+            populationId: [{value: plantSample.populationId, disabled: true}],
+            plantSampleDescription: [{value: plantSample.plantSampleDescription, disabled: true}],
+            tissueId: [{value: plantSample.tissueId, disabled: true}],
+            duplicationId: [{value: plantSample.duplicationId, disabled: true}],
+            phenotypeId: [{value: plantSample.phenotypeId, disabled: true}],
+            sampleWeight: [{value: plantSample.sampleWeight, disabled: true}],
+            locationId: [{value: plantSample.locationId, disabled: true}],
+            shelfPositionId: [{value: plantSample.shelfPositionId, disabled: true}],
+            containerTypeId: [{value: plantSample.containerTypeId, disabled: true}]
+          }));
+        });
       }
     });
   }
 
   clearSearchResults(): void {
     this.searchResults.clear();
+  }
+
+  openFilterDialog(): void {
+    console.log(this.columnShowFilters.getRawValue());
+    const dialofRef = this.dialog.open(PlantSampleColumnCheckerComponent, {
+      width: '250px',
+      data: this.columnShowFilters
+    });
+
+    dialofRef.afterClosed().subscribe(result => {
+      console.log(this.columnShowFilters.getRawValue());
+      if (result instanceof FormGroup) {
+        this.columnShowFilters = result;
+      }
+    })
   }
 }
