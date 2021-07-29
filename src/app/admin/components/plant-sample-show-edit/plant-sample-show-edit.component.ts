@@ -60,20 +60,29 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
               private tissueService: TissueService,
               private duplicationService: DuplicationsService,
               private locationService: LocationService,
-              private dialog: MatDialog) { }
+              private dialog: MatDialog) {
+
+    this.locations$ = new BehaviorSubject<ILocation[]>([]);
+    this.shelfPositions$ = new BehaviorSubject<IShelfPosition[]>([]);
+    this.containerType$ = new BehaviorSubject<IContainer[]>([]);
+    this.populations$ = new BehaviorSubject<IPopulation[]>([]);
+    this.species$ = new BehaviorSubject<ISpecies[]>([]);
+    this.tissues$ = new BehaviorSubject<ITissue[]>([]);
+    this.duplications$ = new BehaviorSubject<IDuplication[]>([]);
+  }
 
   ngOnInit(): void {
     this.columnShowFilters = this.formBuilder.group({
-      showSampleName: [false],
+      showSampleName: [true],
       showCollectionDate: [false],
       showPopulation: [true],
-      showTissue: [false],
+      showTissue: [true],
       showDuplication: [false],
       showPhenotype: [false],
       showSampleWeight: [false],
-      showLocation: [false],
-      showShelfPosition: [false],
-      showContainerType: [false]
+      showLocation: [true],
+      showShelfPosition: [true],
+      showContainerType: [true]
     });
 
     this.bool = [0, 1];
@@ -215,7 +224,7 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
       next: value => {
         value.forEach(plantSample => {
           this.searchResults.push(this.formBuilder.group({
-            edit: [true],
+            edit: [false],
             sampleName: [{value: plantSample.sampleName, disabled: true}],
             collectionDate: [{value: plantSample.collectionDate, disabled: true}],
             populationId: [{value: plantSample.populationId, disabled: true}],
@@ -250,5 +259,29 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
         this.columnShowFilters = result;
       }
     })
+  }
+
+  onEdit(columnName: string, value: any): void {
+    Object.keys(this.searchResults.controls).forEach(key => {
+      const row = this.searchResults.get(key) as FormGroup;
+      if (row.get('edit').value) {
+        row.get(columnName).setValue(value);
+      }
+    });
+  }
+
+  onEditChange(index: number): void {
+    const data = this.searchResults.at(index) as FormGroup;
+    if (data.controls.edit.value) {
+      Object.keys(data.controls).forEach(key => {
+        data.get(key).enable();
+      })
+    } else {
+      Object.keys(data.controls).forEach(key => {
+        if (key !== 'edit') {
+          data.get(key).disable();
+        }
+      })
+    }
   }
 }
