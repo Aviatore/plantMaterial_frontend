@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {BehaviorSubject, Observable, Subject} from "rxjs";
 import {Form, FormArray, FormBuilder, FormGroup} from "@angular/forms";
 import {ISpecies} from "../../interfaces/ISpecies";
@@ -36,6 +36,7 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
   bool: number[];
   boolMap: object;
   columnShowFilters: FormGroup;
+  editRowCounter: number;
 
   populations$: BehaviorSubject<IPopulation[]>;
   species$: BehaviorSubject<ISpecies[]>;
@@ -72,6 +73,7 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.editRowCounter = 0;
     this.columnShowFilters = this.formBuilder.group({
       showSampleName: [true],
       showCollectionDate: [false],
@@ -273,15 +275,21 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
   onEditChange(index: number): void {
     const data = this.searchResults.at(index) as FormGroup;
     if (data.controls.edit.value) {
+      this.editRowCounter++;
       Object.keys(data.controls).forEach(key => {
         data.get(key).enable();
       })
     } else {
+      this.editRowCounter--;
       Object.keys(data.controls).forEach(key => {
         if (key !== 'edit') {
           data.get(key).disable();
         }
       })
     }
+  }
+
+  save(): void {
+    console.log(this.editRowCounter);
   }
 }

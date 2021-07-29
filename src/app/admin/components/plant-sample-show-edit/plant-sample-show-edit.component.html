@@ -126,6 +126,7 @@
           </select>
         </div>
       </div>
+      <button *ngIf="searchResults.controls.length > 0" (click)="save()" class="btn btn-warning btn-sm action-button" [disabled]="editRowCounter === 0">Save</button>
     </div>
 
     <!--<div class="row mb-2">
