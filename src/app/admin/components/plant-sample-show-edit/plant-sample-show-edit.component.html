@@ -87,10 +87,16 @@
     <button (click)="openFilterDialog()" class="btn btn-warning btn-sm">Filter columns</button>
 
     <div class="row mb-2" formArrayName="searchResults">
+      <input type="text" *ngIf="searchResults.controls.length > 0" placeholder="Range filter" style="margin-left: 15px;" #rangesToMark>
+      <button class="btn btn-info btn-sm" *ngIf="searchResults.controls.length > 0" (click)="mark(rangesToMark.nativeElement.value)">Mark</button>
+      <button class="btn btn-info btn-sm" *ngIf="searchResults.controls.length > 0" (click)="unmark()">Unmark</button>
+      <button class="btn btn-warning btn-sm" *ngIf="searchResults.controls.length > 0">Add prep</button>
+
       <div *ngFor="let result of searchResults.controls; let i=index" class="col-md-12 form-input">
 
         <div [formGroupName]="i">
-          <input type="checkbox" formControlName="edit" (change)="onEditChange(i)">
+          <label [for]="'checkbox-' + i">{{i}}</label>
+          <input [id]="'checkbox-' + i" type="checkbox" formControlName="edit" (change)="onEditChange(i)">
           <input type="text" formControlName="sampleName" [hidden]="columnShowFilters.controls.showSampleName.value === false" (change)="onEdit('sampleName', sampleName.value)" #sampleName>
           <input type="date" formControlName="collectionDate" [hidden]="columnShowFilters.controls.showCollectionDate.value === false" (change)="onEdit('collectionDate', collectionDate.value)" #collectionDate>
           <select id="populationId" formControlName="populationId" [hidden]="columnShowFilters.controls.showPopulation.value === false" (change)="onEdit('populationId', populationId.value)" #populationId>

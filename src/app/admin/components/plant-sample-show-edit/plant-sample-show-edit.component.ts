@@ -53,6 +53,8 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
   @ViewChild('shelfPositionTemplate', {read: TemplateRef}) shelfPositionTemp: TemplateRef<any>;
   @ViewChild('containerTypeTemplate', {read: TemplateRef}) containerTypeTemp: TemplateRef<any>;
 
+  @ViewChild('rangesToMark', {read: ElementRef}) rangesToMark: ElementRef;
+
   constructor(private formBuilder: FormBuilder,
               private activatedRoute: ActivatedRoute,
               private plantSampleService: PlantSampleService,
@@ -316,6 +318,48 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
     this.plantSampleService.updatePlantSamples(JSON.stringify(plantSamplesForUpdate.getRawValue())).pipe(takeUntil(this.componentDestroyed)).subscribe({
       next: value => {
         console.log(value);
+      }
+    });
+  }
+
+  mark(ranges: string): void {
+    const indexRanges = this.rangesToMark.nativeElement.value.split(',');
+    console.log(indexRanges);
+    indexRanges.forEach(value => {
+      console.log(value);
+      const valueSplitted = value.split('-');
+      console.log(valueSplitted);
+      if (valueSplitted.length > 1) {
+        for (let i = valueSplitted[0]; i <= valueSplitted[1]; i++) {
+          const row = this.searchResults.get(i.toString()) as FormGroup;
+          row.get('edit').setValue(true);
+          this.editRowCounter++;
+          Object.keys(row.controls).forEach(key => {
+            row.get(key).enable();
+          })
+        }
+      } else {
+        const row = this.searchResults.get(value) as FormGroup;
+        row.get('edit').setValue(true);
+        this.editRowCounter++;
+        Object.keys(row.controls).forEach(key => {
+          row.get(key).enable();
+        })
+      }
+    });
+  }
+
+  unmark(): void {
+    Object.keys(this.searchResults.controls).forEach(key => {
+      const row = this.searchResults.get(key) as FormGroup;
+      if (row.get('edit').value) {
+        row.get('edit').setValue(false);
+        this.editRowCounter--;
+        Object.keys(row.controls).forEach(key => {
+          if (key != 'edit') {
+            row.get(key).disable();
+          }
+        })
       }
     });
   }

@@ -12,7 +12,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { SpeciesShowComponent } from './components/species-show/species-show.component';
 import { SpeciesEditComponent } from './components/species-edit/species-edit.component';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
@@ -77,7 +77,8 @@ import {MatDialogModule} from "@angular/material/dialog";
     MatSelectModule,
     MatCheckboxModule,
     MatDialogModule,
-    AdminRoutingModule
+    AdminRoutingModule,
+    FormsModule
   ],
   exports: [
     AdminComponent
