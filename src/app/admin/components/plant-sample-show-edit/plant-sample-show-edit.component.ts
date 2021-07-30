@@ -20,6 +20,7 @@ import {boolEnum} from "../../enums/boolEnum";
 import {GuidEmpty} from "../../constants";
 import {MatDialog} from "@angular/material/dialog";
 import {PlantSampleColumnCheckerComponent} from "../../modals/plant-sample-column-checker/plant-sample-column-checker.component";
+import {PlantSampleAddPrepComponent} from "../../modals/plant-sample-add-prep/plant-sample-add-prep.component";
 
 @Component({
   selector: 'app-plant-sample-edit',
@@ -277,6 +278,24 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
         this.columnShowFilters = result;
       }
     })
+  }
+
+  openAddPrepDialog(): void {
+    const dialofRef = this.dialog.open(PlantSampleAddPrepComponent, {
+      data: this.getSelectedRows()
+    });
+  }
+
+  getSelectedRows(): FormArray {
+    let plantSamples = this.formBuilder.array([]);
+    Object.keys(this.searchResults.controls).forEach(key => {
+      const row = this.searchResults.get(key) as FormGroup;
+      if (row.get('edit').value) {
+        plantSamples.push(row);
+      }
+    });
+
+    return plantSamples;
   }
 
   onEdit(columnName: string, value: any): void {

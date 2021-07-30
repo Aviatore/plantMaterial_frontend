@@ -1,0 +1,45 @@
+<form [formGroup]="form">
+  <div>
+    <label for="prepTypeId">Prep type</label>
+    <select id="prepTypeId" formControlName="prepTypeId">
+      <option *ngFor="let pos of (prepTypes$ | async)" [value] = pos.prepTypeId>
+        {{pos.prepTypeName}}
+      </option>
+    </select>
+  </div>
+
+  <div>
+    <input type="number" formControlName="volumeUl" placeholder="Volume in µl"><br>
+  </div>
+
+  <div>
+    <label for="prepLocationId">Location:</label>
+    <select id="prepLocationId" formControlName="prepLocationId">
+      <option *ngFor="let pos of (locations$ | async)" [value] = pos.locationId>
+        {{pos.locationName}}
+      </option>
+    </select>
+  </div>
+
+  <div>
+    <label for="shelfPositionId">Shelf position:</label>
+    <select id="shelfPositionId" formControlName="shelfPositionId">
+      <option *ngFor="let pos of (shelfPositions$ | async)" [value] = pos.shelfPositionId>
+        {{pos.shelfPositionName}}
+      </option>
+    </select>
+  </div>
+
+  <div>
+    <label for="containerTypeId">Container type:</label>
+    <select id="containerTypeId" formControlName="containerTypeId">
+      <option *ngFor="let pos of (containerTypes$ | async)" [value] = pos.containerTypeId>
+        {{pos.containerTypeName}}
+      </option>
+    </select>
+  </div>
+
+  <div>
+    <button class="btn btn-sm btn-info" (click)="save()">Save</button>
+  </div>
+</form>

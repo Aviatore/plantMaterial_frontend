@@ -35,4 +35,6 @@ export const Urls = {
   UpdatePlantSample: 'http://localhost:5000/plant-sample/update',
 
   GetAllDuplications: 'http://localhost:5000/duplications',
+  AddPrep: 'http://localhost:5000/prep/add',
+  GetPrepTypes: 'http://localhost:5000/prep-types/get',
 };

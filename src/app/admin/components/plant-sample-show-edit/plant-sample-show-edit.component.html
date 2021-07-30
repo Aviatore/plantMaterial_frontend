@@ -90,7 +90,7 @@
       <input type="text" *ngIf="searchResults.controls.length > 0" placeholder="Range filter" style="margin-left: 15px;" #rangesToMark>
       <button class="btn btn-info btn-sm" *ngIf="searchResults.controls.length > 0" (click)="mark(rangesToMark.nativeElement.value)">Mark</button>
       <button class="btn btn-info btn-sm" *ngIf="searchResults.controls.length > 0" (click)="unmark()">Unmark</button>
-      <button class="btn btn-warning btn-sm" *ngIf="searchResults.controls.length > 0">Add prep</button>
+      <button class="btn btn-warning btn-sm" *ngIf="searchResults.controls.length > 0" (click)="openAddPrepDialog()">Add prep</button>
 
       <div *ngFor="let result of searchResults.controls; let i=index" class="col-md-12 form-input">
 

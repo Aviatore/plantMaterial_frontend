@@ -36,6 +36,7 @@ import { PlantSampleAddComponent } from './components/plant-sample-add/plant-sam
 import { PlantSampleColumnCheckerComponent } from './modals/plant-sample-column-checker/plant-sample-column-checker.component';
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatDialogModule} from "@angular/material/dialog";
+import { PlantSampleAddPrepComponent } from './modals/plant-sample-add-prep/plant-sample-add-prep.component';
 
 
 @NgModule({
@@ -59,7 +60,8 @@ import {MatDialogModule} from "@angular/material/dialog";
     PopulationEditComponent,
     PlantSampleShowEditComponent,
     PlantSampleAddComponent,
-    PlantSampleColumnCheckerComponent
+    PlantSampleColumnCheckerComponent,
+    PlantSampleAddPrepComponent
   ],
   imports: [
     CommonModule,
