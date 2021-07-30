@@ -222,11 +222,25 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
   }
 
   searchPlantSamples(): void {
-    this.plantSampleService.getPlantSamples(JSON.stringify(this.searchFilters.getRawValue())).subscribe({
+    let emptyFilters = [];
+    Object.keys(this.searchFilters.controls).forEach(key => {
+      const row = this.searchFilters.get(key) as FormGroup;
+      if (row.get('filter').value === '') {
+        emptyFilters.push(key);
+      }
+    });
+    emptyFilters.reverse();
+    emptyFilters.forEach(key => {
+      console.log(`Removing empty filter: ${key} ...`);
+      this.searchFilters.removeAt(key);
+    })
+
+    this.plantSampleService.getPlantSamples(JSON.stringify(this.searchFilters.getRawValue())).pipe(takeUntil(this.componentDestroyed)).subscribe({
       next: value => {
         value.forEach(plantSample => {
           this.searchResults.push(this.formBuilder.group({
             edit: [false],
+            plantSampleId: [plantSample.plantSampleId],
             sampleName: [{value: plantSample.sampleName, disabled: true}],
             collectionDate: [{value: plantSample.collectionDate, disabled: true}],
             populationId: [{value: plantSample.populationId, disabled: true}],
@@ -290,6 +304,19 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
   }
 
   save(): void {
-    console.log(this.editRowCounter);
+    let plantSamplesForUpdate = this.formBuilder.array([]);
+    Object.keys(this.searchResults.controls).forEach(key => {
+      const row = this.searchResults.get(key) as FormGroup;
+      if (row.get('edit').value) {
+        console.log(`Adding sample for update: ${row.get('plantSampleId').value} ...`);
+        plantSamplesForUpdate.push(this.searchResults.get(key));
+      }
+    });
+
+    this.plantSampleService.updatePlantSamples(JSON.stringify(plantSamplesForUpdate.getRawValue())).pipe(takeUntil(this.componentDestroyed)).subscribe({
+      next: value => {
+        console.log(value);
+      }
+    });
   }
 }

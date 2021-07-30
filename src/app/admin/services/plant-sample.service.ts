@@ -4,6 +4,7 @@ import {Observable} from "rxjs";
 import {IPopulation} from "../interfaces/IPopulation";
 import {Urls} from "../urls/urls";
 import {IPlantSample} from "../interfaces/IPlantSample";
+import {IResponse} from "../interfaces/IResponse";
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +36,12 @@ export class PlantSampleService {
 
   getPlantSamples(plantSampleFilters: string): Observable<IPlantSample[]> {
     return this.httpClient.post<IPlantSample[]>(Urls.GetPlantSample, plantSampleFilters, {
+      headers: new HttpHeaders().set('Content-Type', 'application/json')
+    });
+  }
+
+  updatePlantSamples(plantSamples: string): Observable<IResponse> {
+    return this.httpClient.post<IResponse>(Urls.UpdatePlantSample, plantSamples, {
       headers: new HttpHeaders().set('Content-Type', 'application/json')
     });
   }
