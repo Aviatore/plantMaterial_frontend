@@ -41,5 +41,6 @@
 
   <div>
     <button class="btn btn-sm btn-info" (click)="save()">Save</button>
+    <span #resultMessage [ngClass]="saveResultStatus === 200 ? 'good' : 'bad'"></span>
   </div>
 </form>

@@ -4,3 +4,13 @@ label {
 div {
   margin: 5px 0 5px 0;
 }
+.good {
+  margin-left: 10px;
+  font-size: .8em;
+  color: #00d000;
+}
+.bad {
+  margin-left: 10px;
+  font-size: .8em;
+  color: #ea2323;
+}

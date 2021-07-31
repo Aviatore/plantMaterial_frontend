@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup} from "@angular/forms";
 import {MAT_DIALOG_DATA} from "@angular/material/dialog";
 import {GuidEmpty} from "../../constants";
@@ -23,7 +23,9 @@ export class PlantSampleAddPrepComponent implements OnInit {
   prepTypes$: Observable<IPrepType[]>;
   locations$: Observable<ILocation[]>;
   shelfPositions$: Observable<IShelfPosition[]>;
-  containerTypes$: Observable<IContainer[]>;
+  containerTypes$: Observable<IContainer[]>
+  saveResultStatus: number;
+  @ViewChild('resultMessage', {read: ElementRef}) resultMessage: ElementRef;
 
   constructor(private formBuilder: FormBuilder,
               private prepService: PrepService,
@@ -31,6 +33,7 @@ export class PlantSampleAddPrepComponent implements OnInit {
               @Inject(MAT_DIALOG_DATA) public data: FormArray) { }
 
   ngOnInit(): void {
+    this.saveResultStatus = 200;
     this.prepTypes$ = this.prepService.getPrepTypes().pipe(map(p => p.sort()));
     this.locations$ = this.locationService.getAllLocations().pipe(map(p => p.sort()));
     this.shelfPositions$ = this.locationService.getAllShelfPositions().pipe(map(p => p.sort()));
@@ -71,6 +74,8 @@ export class PlantSampleAddPrepComponent implements OnInit {
     this.prepService.addPrep(JSON.stringify(this.preps.getRawValue())).subscribe({
       next: value => {
         console.log(value);
+        this.resultMessage.nativeElement.innerText = value.body.detail;
+        this.saveResultStatus = value.body.status;
       }
     });
   }

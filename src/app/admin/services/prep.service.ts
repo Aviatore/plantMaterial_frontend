@@ -6,6 +6,7 @@ import {Urls} from "../urls/urls";
 import {ILocationType} from "../interfaces/ILocationType";
 import {IPrepType} from "../interfaces/IPrepType";
 import {IPrep} from "../interfaces/IPrep";
+import {IResponse} from "../interfaces/IResponse";
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +15,8 @@ export class PrepService {
 
   constructor(private httpClient: HttpClient) { }
 
-  addPrep(preps: string): Observable<HttpResponse<HttpResponse<Observable<any>>>> {
-    return this.httpClient.post<HttpResponse<Observable<any>>>(Urls.AddPrep, preps, {
+  addPrep(preps: string): Observable<HttpResponse<IResponse>> {
+    return this.httpClient.post<IResponse>(Urls.AddPrep, preps, {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
       observe: 'response'
     });
