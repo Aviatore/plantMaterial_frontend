@@ -11,6 +11,8 @@ import {IContainer} from "../../interfaces/IContainer";
 import {map} from "rxjs/operators";
 import {PrepService} from "../../services/prep.service";
 import {LocationService} from "../../services/location.service";
+import {IPrepLocation} from "../../interfaces/IPrepLocation";
+import {IAddPrepDialogInputData} from "../../interfaces/IAddPrepDialogInputData";
 
 @Component({
   selector: 'app-plant-sample-add-prep',
@@ -30,7 +32,7 @@ export class PlantSampleAddPrepComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
               private prepService: PrepService,
               private locationService: LocationService,
-              @Inject(MAT_DIALOG_DATA) public data: FormArray) { }
+              @Inject(MAT_DIALOG_DATA) public data: IAddPrepDialogInputData) { }
 
   ngOnInit(): void {
     this.saveResultStatus = 200;
@@ -48,15 +50,16 @@ export class PlantSampleAddPrepComponent implements OnInit {
       prepDescription: [''],
       volumeUl: [''],
       shelfPositionId: [''],
-      containerTypeId: ['']
+      containerTypeId: [''],
+      isolationDate: ['']
     });
 
     this.preps = this.formBuilder.array([]);
   }
 
   save(): void {
-    Object.keys(this.data.controls).forEach(key => {
-      const row = this.data.get(key) as FormGroup;
+    Object.keys(this.data.editedRows.controls).forEach(key => {
+      const row = this.data.editedRows.get(key) as FormGroup;
 
       this.preps.push(this.formBuilder.group({
         prepId: [GuidEmpty],
@@ -67,8 +70,20 @@ export class PlantSampleAddPrepComponent implements OnInit {
         prepDescription: [''],
         volumeUl: [this.form.get('volumeUl').value],
         shelfPositionId: [this.form.get('shelfPositionId').value],
-        containerTypeId: [this.form.get('containerTypeId').value]
+        containerTypeId: [this.form.get('containerTypeId').value],
+        isolationDate: [this.form.get('isolationDate').value],
       }));
+
+      /*const prepsLocation = row.get('prepsLocation') as FormArray
+      const prepLocation: IPrepLocation = {
+        locationName: this.form.get('prepLocationId').value,
+        shelfPositionName: this.form.get('shelfPositionId').value,
+        containerTypeName: this.form.get('containerTypeId').value,
+        prepTypeName: this.form.get('prepTypeId').value,
+        locationTypeName: this.form.get('prepLocationId').value,
+        isolationDate: this.form.get('isolationDate').value
+      }
+      prepsLocation.push()*/
     });
 
     this.prepService.addPrep(JSON.stringify(this.preps.getRawValue())).subscribe({
@@ -76,6 +91,7 @@ export class PlantSampleAddPrepComponent implements OnInit {
         console.log(value);
         this.resultMessage.nativeElement.innerText = value.body.detail;
         this.saveResultStatus = value.body.status;
+        this.data.reSearch.next();
       }
     });
   }

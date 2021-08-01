@@ -39,6 +39,7 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
   boolMap: object;
   columnShowFilters: FormGroup;
   editRowCounter: number;
+  reSearchPlantSamples: Subject<any>;
 
   populations$: BehaviorSubject<IPopulation[]>;
   species$: BehaviorSubject<ISpecies[]>;
@@ -77,6 +78,13 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.reSearchPlantSamples = new Subject();
+    this.reSearchPlantSamples.subscribe({
+      next: value => {
+        this.searchResults.clear();
+        this.searchPlantSamples()
+      }
+    });
     this.editRowCounter = 0;
     this.columnShowFilters = this.formBuilder.group({
       showSampleName: [true],
@@ -285,7 +293,10 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
 
   openAddPrepDialog(): void {
     const dialofRef = this.dialog.open(PlantSampleAddPrepComponent, {
-      data: this.getSelectedRows()
+      data: {
+        editedRows: this.getSelectedRows(),
+        reSearch: this.reSearchPlantSamples
+      }
     });
   }
 
@@ -390,7 +401,7 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
     let isolationDate: string;
     if (prep.isolationDate !== null) {
       const date = new Date(prep.isolationDate)
-      isolationDate = `${date.getFullYear()}-${this.precedingZeroFormat(date.getMonth().toString())}-${this.precedingZeroFormat((date.getDay() + 1).toString())}`;
+      isolationDate = `${date.getFullYear()}-${this.precedingZeroFormat((date.getMonth() + 1).toString())}-${this.precedingZeroFormat(date.getDate().toString())}`;
     } else {
       isolationDate = 'unknown';
     }

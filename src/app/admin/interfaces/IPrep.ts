@@ -8,4 +8,5 @@ export interface IPrep {
   volumeUl: string;
   shelfPositionId: string;
   containerTypeId: string;
+  isolationDate: Date;
 }

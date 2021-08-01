@@ -40,6 +40,11 @@
   </div>
 
   <div>
+    <label for="isolationDate">Isolation date:</label>
+    <input id="isolationDate" type="date" formControlName="isolationDate">
+  </div>
+
+  <div>
     <button class="btn btn-sm btn-info" (click)="save()">Save</button>
     <span #resultMessage [ngClass]="saveResultStatus === 200 ? 'good' : 'bad'"></span>
   </div>
