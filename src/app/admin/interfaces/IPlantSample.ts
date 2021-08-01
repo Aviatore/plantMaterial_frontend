@@ -1,3 +1,5 @@
+import {IPrep} from "./IPrep";
+
 export interface IPlantSample {
   plantSampleId: string;
   sampleName: string;
@@ -11,4 +13,5 @@ export interface IPlantSample {
   locationId: string;
   shelfPositionId: string;
   containerTypeId: string;
+  prepsLocation: IPrep[]
 }

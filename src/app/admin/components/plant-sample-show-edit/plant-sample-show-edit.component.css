@@ -23,3 +23,8 @@ input, select {
 .action-button {
   margin-left: 15px;
 }
+
+::ng-deep .prep-tooltip {
+  font-size: 1em;
+  white-space: pre-line;
+}

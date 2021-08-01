@@ -25,4 +25,8 @@ export class PrepService {
   getPrepTypes(): Observable<IPrepType[]> {
     return this.httpClient.get<IPrepType[]>(Urls.GetPrepTypes);
   }
+
+  getPrep() {
+
+  }
 }

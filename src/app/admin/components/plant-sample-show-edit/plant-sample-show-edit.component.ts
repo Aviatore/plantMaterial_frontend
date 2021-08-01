@@ -21,6 +21,7 @@ import {GuidEmpty} from "../../constants";
 import {MatDialog} from "@angular/material/dialog";
 import {PlantSampleColumnCheckerComponent} from "../../modals/plant-sample-column-checker/plant-sample-column-checker.component";
 import {PlantSampleAddPrepComponent} from "../../modals/plant-sample-add-prep/plant-sample-add-prep.component";
+import {IPrepLocation} from "../../interfaces/IPrepLocation";
 
 @Component({
   selector: 'app-plant-sample-edit',
@@ -87,7 +88,8 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
       showSampleWeight: [false],
       showLocation: [true],
       showShelfPosition: [true],
-      showContainerType: [true]
+      showContainerType: [true],
+      showPreps: [true],
     });
 
     this.bool = [0, 1];
@@ -254,7 +256,8 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
             sampleWeight: [{value: plantSample.sampleWeight, disabled: true}],
             locationId: [{value: plantSample.locationId, disabled: true}],
             shelfPositionId: [{value: plantSample.shelfPositionId, disabled: true}],
-            containerTypeId: [{value: plantSample.containerTypeId, disabled: true}]
+            containerTypeId: [{value: plantSample.containerTypeId, disabled: true}],
+            prepsLocation: [[...plantSample.prepsLocation]]
           }));
         });
       }
@@ -266,14 +269,14 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
   }
 
   openFilterDialog(): void {
-    console.log(this.columnShowFilters.getRawValue());
+    // console.log(this.columnShowFilters.getRawValue());
     const dialofRef = this.dialog.open(PlantSampleColumnCheckerComponent, {
       width: '250px',
       data: this.columnShowFilters
     });
 
     dialofRef.afterClosed().subscribe(result => {
-      console.log(this.columnShowFilters.getRawValue());
+      // console.log(this.columnShowFilters.getRawValue());
       if (result instanceof FormGroup) {
         this.columnShowFilters = result;
       }
@@ -381,5 +384,26 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
         })
       }
     });
+  }
+
+  prepTooltipMessageFactory(prep: IPrepLocation): string {
+    let isolationDate: string;
+    if (prep.isolationDate !== null) {
+      const date = new Date(prep.isolationDate)
+      isolationDate = `${date.getFullYear()}-${this.precedingZeroFormat(date.getMonth().toString())}-${this.precedingZeroFormat((date.getDay() + 1).toString())}`;
+    } else {
+      isolationDate = 'unknown';
+    }
+
+    return `Prep type: ${prep.prepTypeName}
+    Isolation date: ${isolationDate}
+    Location: ${prep.locationName}
+    Location type: ${prep.locationTypeName}
+    Shelf position: ${prep.shelfPositionName}
+    Container type: ${prep.containerTypeName}`;
+  }
+
+  precedingZeroFormat(value: string): string {
+    return value.length === 2 ? value : `0${value}`;
   }
 }

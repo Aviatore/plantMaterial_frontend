@@ -130,6 +130,7 @@
               {{pos.containerTypeName}}
             </option>
           </select>
+          <app-prep-label *ngFor="let prep of result.get('prepsLocation').value" [hidden]="columnShowFilters.controls.showPreps.value === false" [prepData]="prep" [matTooltip]="prepTooltipMessageFactory(prep)" matTooltipClass="prep-tooltip">{{prep}}</app-prep-label>
         </div>
       </div>
       <button *ngIf="searchResults.controls.length > 0" (click)="save()" class="btn btn-warning btn-sm action-button" [disabled]="editRowCounter === 0">Save</button>

@@ -1,0 +1,21 @@
+.DNA {
+  border: 1px solid black;
+  display: inline-block;
+  background-color: #43a0db;
+}
+.RNA {
+  border: 1px solid black;
+  display: inline-block;
+  background-color: #00d000;
+}
+.Prot {
+  border: 1px solid black;
+  display: inline-block;
+  background-color: chocolate;
+}
+span {
+  line-height: 100%;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-size: .5em;
+}
