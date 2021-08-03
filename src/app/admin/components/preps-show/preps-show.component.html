@@ -1,0 +1,134 @@
+<div class="container">
+  <form [formGroup]="form">
+
+    <div class="row mb-2" formArrayName="searchFilters">
+      <div *ngFor="let param of searchFilters.controls; let i=index" class="col-md-12 form-input">
+        <div [formGroupName]="i">
+          <select formControlName="bool">
+            <option *ngFor="let b of bool" [value] = b>
+              {{boolMap[b]}}
+            </option>
+          </select>
+
+          <select #element formControlName="filter">
+            <option value='' selected>-- Select filter --</option>
+            <option *ngFor="let filterKey of filters.sort()" [value] = filterKey>
+              {{filterKey}}
+            </option>
+          </select>
+
+          <ng-container [ngSwitch]="element.value">
+            <ng-container *ngSwitchCase="'Population'">
+              <select formControlName="populationId">
+                <option *ngFor="let pos of (populations$ | async)" [value] = pos.populationId>
+                  {{pos.populationName}}
+                </option>value
+              </select>
+              <button (click)="addFilter()" class="btn btn-info btn-sm">Add filter</button>
+              <button (click)="removeFilter(i)" class="btn btn-info btn-sm" *ngIf="i > 0">Remove filter</button>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="'Tissue'">
+              <select formControlName="tissueId">
+                <option *ngFor="let pos of (tissues$ | async)" [value] = pos.tissueId>
+                  {{pos.tissueName}}
+                </option>
+              </select>
+              <button (click)="addFilter()" class="btn btn-info btn-sm">Add filter</button>
+              <button (click)="removeFilter(i)" class="btn btn-info btn-sm" *ngIf="i > 0">Remove filter</button>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="'Duplication'">
+              <select formControlName="duplicationId">
+                <option *ngFor="let pos of (duplications$ | async)" [value] = pos.duplicationId>
+                  {{pos.duplicationName}}
+                </option>
+              </select>
+              <button (click)="addFilter()" class="btn btn-info btn-sm">Add filter</button>
+              <button (click)="removeFilter(i)" class="btn btn-info btn-sm" *ngIf="i > 0">Remove filter</button>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="'Location type'">
+              <select formControlName="locationId">
+                <option *ngFor="let pos of (locations$ | async)" [value] = pos.locationId>
+                  {{pos.locationName}}
+                </option>
+              </select>
+              <button (click)="addFilter()" class="btn btn-info btn-sm">Add filter</button>
+              <button (click)="removeFilter(i)" class="btn btn-info btn-sm" *ngIf="i > 0">Remove filter</button>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="'Shelf position'">
+              <select formControlName="shelfPositionId">
+                <option *ngFor="let pos of (shelfPositions$ | async)" [value] = pos.shelfPositionId>
+                  {{pos.shelfPositionName}}
+                </option>
+              </select>
+              <button (click)="addFilter()" class="btn btn-info btn-sm">Add filter</button>
+              <button (click)="removeFilter(i)" class="btn btn-info btn-sm" *ngIf="i > 0">Remove filter</button>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="'Container type'">
+              <select formControlName="containerTypeId">
+                <option *ngFor="let pos of (containerType$ | async)" [value] = pos.containerTypeId>
+                  {{pos.containerTypeName}}
+                </option>
+              </select>
+              <button (click)="addFilter()" class="btn btn-info btn-sm">Add filter</button>
+              <button (click)="removeFilter(i)" class="btn btn-info btn-sm" *ngIf="i > 0">Remove filter</button>
+            </ng-container>
+          </ng-container>
+        </div>
+      </div>
+
+      <button (click)="searchPreps()" class="btn btn-info btn-sm action-button">Search</button>
+      <button (click)="clearSearchResults()" class="btn btn-warning btn-sm action-button">Clear</button>
+    </div>
+    <button (click)="openFilterDialog()" class="btn btn-warning btn-sm">Filter columns</button>
+
+    <div class="row mb-2" formArrayName="searchResults">
+      <input type="text" *ngIf="searchResults.controls.length > 0" placeholder="Range filter" style="margin-left: 15px;" #rangesToMark>
+      <button class="btn btn-info btn-sm" *ngIf="searchResults.controls.length > 0" (click)="mark(rangesToMark.nativeElement.value)">Mark</button>
+      <button class="btn btn-info btn-sm" *ngIf="searchResults.controls.length > 0" (click)="unmark()">Unmark</button>
+
+      <div *ngFor="let result of searchResults.controls; let i=index" class="col-md-12 form-input">
+
+        <div [formGroupName]="i">
+          <label [for]="'checkbox-' + i">{{i}}</label>
+          <input [id]="'checkbox-' + i" type="checkbox" formControlName="edit" (change)="onEditChange(i)">
+          <input type="text" formControlName="prepName" [hidden]="columnShowFilters.controls.showPrepName.value === false" (change)="onEdit('prepName', prepName.value)" [ngStyle]="{'width': prepNameWidth}" #prepName>
+          <select id="prepTypeId" formControlName="prepTypeId" [hidden]="columnShowFilters.controls.showPrepType.value === false" (change)="onEdit('prepTypeId', prepTypeId.value)" #prepTypeId>
+            <option *ngFor="let pos of (prepType$ | async)" [value] = pos.prepTypeId>
+              {{pos.prepTypeName}}
+            </option>
+          </select>
+          <select id="duplicationId" formControlName="duplicationId" [hidden]="columnShowFilters.controls.showDuplication.value === false" (change)="onEdit('duplicationId', duplicationId.value)" #duplicationId>
+            <option *ngFor="let pos of (duplications$ | async)" [value] = pos.duplicationId>
+              {{pos.duplicationName}}
+            </option>
+          </select>
+          <input type="date" formControlName="isolationDate" [hidden]="columnShowFilters.controls.showIsolationDate.value === false" (change)="onEdit('isolationDate', isolationDate.value)" #isolationDate>
+          <input type="text" placeholder="Volume " formControlName="volumeUl" [hidden]="columnShowFilters.controls.showVolume.value === false" (change)="onEdit('volumeUl', volumeUl.value)" [ngStyle]="{'width': volumeWidth}" #volumeUl>
+          <select id="locationId" formControlName="prepLocationId" [hidden]="columnShowFilters.controls.showLocation.value === false" (change)="onEdit('prepLocationId', prepLocationId.value)" #prepLocationId>
+            <option *ngFor="let pos of (locations$ | async)" [value] = pos.locationId>
+              {{pos.locationName}}
+            </option>
+          </select>
+          <select id="shelfPositionId" formControlName="shelfPositionId" [hidden]="columnShowFilters.controls.showShelfPosition.value === false" (change)="onEdit('shelfPositionId', shelfPositionId.value)" #shelfPositionId>
+            <option *ngFor="let pos of (shelfPositions$ | async)" [value] = pos.shelfPositionId>
+              {{pos.shelfPositionName}}
+            </option>
+          </select>
+          <select id="containerTypeId" formControlName="containerTypeId" [hidden]="columnShowFilters.controls.showContainerType.value === false" (change)="onEdit('containerTypeId', containerTypeId.value)" #containerTypeId>
+            <option *ngFor="let pos of (containerType$ | async)" [value] = pos.containerTypeId>
+              {{pos.containerTypeName}}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <button *ngIf="searchResults.controls.length > 0" (click)="save()" class="btn btn-warning btn-sm action-button" [disabled]="editRowCounter === 0">Save</button>
+  </form>
+</div>
+
+

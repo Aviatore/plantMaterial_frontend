@@ -9,4 +9,5 @@ export interface IPrep {
   shelfPositionId: string;
   containerTypeId: string;
   isolationDate: Date;
+  duplicationId: string;
 }

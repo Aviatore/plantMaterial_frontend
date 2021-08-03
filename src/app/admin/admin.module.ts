@@ -38,6 +38,7 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatDialogModule} from "@angular/material/dialog";
 import { PlantSampleAddPrepComponent } from './modals/plant-sample-add-prep/plant-sample-add-prep.component';
 import { PrepLabelComponent } from './small-components/prep-label/prep-label.component';
+import { PrepsShowComponent } from './components/preps-show/preps-show.component';
 
 
 @NgModule({
@@ -63,7 +64,8 @@ import { PrepLabelComponent } from './small-components/prep-label/prep-label.com
     PlantSampleAddComponent,
     PlantSampleColumnCheckerComponent,
     PlantSampleAddPrepComponent,
-    PrepLabelComponent
+    PrepLabelComponent,
+    PrepsShowComponent
   ],
   imports: [
     CommonModule,

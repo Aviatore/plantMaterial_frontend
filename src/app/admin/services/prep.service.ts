@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders, HttpResponse} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {IPlantSample} from "../interfaces/IPlantSample";
 import {Urls} from "../urls/urls";
@@ -26,7 +26,15 @@ export class PrepService {
     return this.httpClient.get<IPrepType[]>(Urls.GetPrepTypes);
   }
 
-  getPrep() {
+  getPrep(prepFilters: string): Observable<IPrep[]> {
+    return this.httpClient.post<IPrep[]>(Urls.GetPreps, prepFilters, {
+      headers: new HttpHeaders().set('Content-Type', 'application/json')
+    });
+  }
 
+  updatePrep(preps: string): Observable<IResponse> {
+    return this.httpClient.post<IResponse>(Urls.UpdatePreps, preps, {
+      headers: new HttpHeaders().set('Content-Type', 'application/json')
+    });
   }
 }

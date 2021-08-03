@@ -37,4 +37,6 @@ export const Urls = {
   GetAllDuplications: 'http://localhost:5000/duplications',
   AddPrep: 'http://localhost:5000/prep/add',
   GetPrepTypes: 'http://localhost:5000/prep-types/get',
+  GetPreps: 'http://localhost:5000/prep/get',
+  UpdatePreps: 'http://localhost:5000/prep/update'
 };

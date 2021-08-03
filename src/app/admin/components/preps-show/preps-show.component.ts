@@ -1,8 +1,10 @@
-import {Component, ElementRef, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {BehaviorSubject, Observable, Subject} from "rxjs";
-import {Form, FormArray, FormBuilder, FormGroup} from "@angular/forms";
-import {ISpecies} from "../../interfaces/ISpecies";
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {FormArray, FormBuilder, FormGroup} from "@angular/forms";
+import {boolEnum} from "../../enums/boolEnum";
+import {GuidEmpty} from "../../constants";
+import {BehaviorSubject, Subject} from "rxjs";
 import {IPopulation} from "../../interfaces/IPopulation";
+import {ISpecies} from "../../interfaces/ISpecies";
 import {ITissue} from "../../interfaces/ITissue";
 import {IDuplication} from "../../interfaces/IDuplication";
 import {ILocation} from "../../interfaces/ILocation";
@@ -15,32 +17,33 @@ import {SpeciesService} from "../../services/species.service";
 import {TissueService} from "../../services/tissue.service";
 import {DuplicationsService} from "../../services/duplications.service";
 import {LocationService} from "../../services/location.service";
-import {map, takeUntil} from "rxjs/operators";
-import {boolEnum} from "../../enums/boolEnum";
-import {GuidEmpty} from "../../constants";
 import {MatDialog} from "@angular/material/dialog";
+import {map, takeUntil} from "rxjs/operators";
+import {PrepService} from "../../services/prep.service";
 import {PlantSampleColumnCheckerComponent} from "../../modals/plant-sample-column-checker/plant-sample-column-checker.component";
-import {PlantSampleAddPrepComponent} from "../../modals/plant-sample-add-prep/plant-sample-add-prep.component";
-import {IPrepLocation} from "../../interfaces/IPrepLocation";
+import {IPrepType} from "../../interfaces/IPrepType";
 
 @Component({
-  selector: 'app-plant-sample-edit',
-  templateUrl: './plant-sample-show-edit.component.html',
-  styleUrls: ['./plant-sample-show-edit.component.css']
+  selector: 'app-preps-show',
+  templateUrl: './preps-show.component.html',
+  styleUrls: ['./preps-show.component.css']
 })
-export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
+export class PrepsShowComponent implements OnInit, OnDestroy {
   componentDestroyed: Subject<any>;
   form: FormGroup;
-  submitted = false;
-  filters = {};
-  filtersMap = {};
-  columnFilterMap = {};
-  filterKeys: string[];
+  editRowCounter: number;
+  columnShowFilters: FormGroup;
   bool: number[];
   boolMap: object;
-  columnShowFilters: FormGroup;
-  editRowCounter: number;
-  reSearchPlantSamples: Subject<any>;
+  filters = [];
+  filtersMap = {};
+
+  maxPrepNameLength: number;
+  prepNameWidth: string;
+
+  maxVolumeLength: number;
+  volumeWidth: string;
+
 
   populations$: BehaviorSubject<IPopulation[]>;
   species$: BehaviorSubject<ISpecies[]>;
@@ -49,19 +52,13 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
   locations$: BehaviorSubject<ILocation[]>;
   shelfPositions$: BehaviorSubject<IShelfPosition[]>;
   containerType$: BehaviorSubject<IContainer[]>;
-
-  @ViewChild('populationTemplate', {read: TemplateRef}) populationTemp: TemplateRef<any>;
-  @ViewChild('tissueTemplate', {read: TemplateRef}) tissueTemp: TemplateRef<any>;
-  @ViewChild('duplicationTemplate', {read: TemplateRef}) duplicationTemp: TemplateRef<any>;
-  @ViewChild('locationTemplate', {read: TemplateRef}) locationTemp: TemplateRef<any>;
-  @ViewChild('shelfPositionTemplate', {read: TemplateRef}) shelfPositionTemp: TemplateRef<any>;
-  @ViewChild('containerTypeTemplate', {read: TemplateRef}) containerTypeTemp: TemplateRef<any>;
+  prepType$: BehaviorSubject<IPrepType[]>;
 
   @ViewChild('rangesToMark', {read: ElementRef}) rangesToMark: ElementRef;
 
   constructor(private formBuilder: FormBuilder,
               private activatedRoute: ActivatedRoute,
-              private plantSampleService: PlantSampleService,
+              private prepService: PrepService,
               private populationService: PopulationService,
               private speciesService: SpeciesService,
               private tissueService: TissueService,
@@ -76,41 +73,46 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
     this.species$ = new BehaviorSubject<ISpecies[]>([]);
     this.tissues$ = new BehaviorSubject<ITissue[]>([]);
     this.duplications$ = new BehaviorSubject<IDuplication[]>([]);
+    this.prepType$ = new BehaviorSubject<IPrepType[]>([]);
   }
 
   ngOnInit(): void {
-    this.reSearchPlantSamples = new Subject();
-    this.reSearchPlantSamples.subscribe({
-      next: value => {
-        this.searchResults.clear();
-        this.searchPlantSamples()
-      }
+    this.form = this.formBuilder.group({
+      searchFilters: this.formBuilder.array([
+        this.formBuilder.group({
+          bool: [boolEnum.and],
+          filter: [''],
+          populationId: [GuidEmpty],
+          tissueId: [GuidEmpty],
+          duplicationId: [GuidEmpty],
+          locationId: [GuidEmpty],
+          shelfPositionId: [GuidEmpty],
+          containerTypeId: [GuidEmpty]
+        })
+      ]),
+      searchResults: this.formBuilder.array([])
     });
+
     this.editRowCounter = 0;
     this.columnShowFilters = this.formBuilder.group({
-      showSampleName: [true],
-      showCollectionDate: [false],
-      showPopulation: [true],
-      showTissue: [true],
+      showPrepName: [true],
+      showIsolationDate: [false],
       showDuplication: [false],
-      showPhenotype: [false],
-      showSampleWeight: [false],
       showLocation: [true],
       showShelfPosition: [true],
       showContainerType: [true],
-      showPreps: [true],
+      showPrepType: [true],
+      showVolume: [true]
     });
-    this.columnFilterMap = {
-      showSampleName: 'Sample name',
-      showCollectionDate: 'Collection date',
-      showPopulation: 'Population name',
-      showTissue: 'Tissue',
+    this.filtersMap = {
+      showPrepName: 'Prep name',
+      showPrepType: 'Prep type',
       showDuplication: 'Duplication',
-      showSampleWeight: 'Sample weight',
+      showIsolationDate: 'Isolation date',
+      showVolume: 'Show volume',
       showLocation: 'Location',
       showShelfPosition: 'Shelf position',
-      showContainerType: 'Container type',
-      showPreps: 'Preps',
+      showContainerType: 'Container type'
     }
 
     this.bool = [0, 1];
@@ -118,33 +120,17 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
       0: 'And',
       1: 'Not'
     }
+
     this.componentDestroyed = new Subject();
-    this.filters = {
-      population: this.populationTemp,
-      tissue: this.tissueTemp,
-      duplication: this.duplicationTemp,
-      location: this.locationTemp,
-      shelfPosition: this.shelfPositionTemp,
-      containerType: this.containerTypeTemp
-    }
-    this.filtersMap = {
-      population: 'Population',
-      tissue: 'Tissue',
-      duplication: 'Duplication',
-      location: 'Location type',
-      shelfPosition: 'Shelf position',
-      containerType: 'Container type'
-    }
+    this.filters = [
+      'Population',
+      'Tissue',
+      'Duplication',
+      'Location type',
+      'Shelf position',
+      'Container type'
+    ]
 
-    this.filterKeys = Object.keys(this.filters);
-
-    // this.populations$ = this.populationService.getAllPopulations().pipe(map(p => p.sort()));
-    // this.species$ = this.speciesService.getAllSpecies().pipe(map(p => p.sort()));
-    // this.tissues$ = this.tissueService.getAllTissues().pipe(map(p => p.sort()));
-    // this.duplications$ = this.duplicationService.getAllDuplications().pipe(map(p => p.sort()));
-    // this.locations$ = this.locationService.getAllLocations().pipe(map(p => p.sort()));
-    // this.shelfPositions$ = this.locationService.getAllShelfPositions().pipe(map(p => p.sort()));
-    // this.containerType$ = this.locationService.getAllContainers().pipe(map(p => p.sort()));
     this.locationService.getAllLocations().pipe(
       takeUntil(this.componentDestroyed),
       map(p => p.sort())
@@ -196,6 +182,13 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
       next: value => this.duplications$.next(value)
     });
 
+    this.prepService.getPrepTypes().pipe(
+      takeUntil(this.componentDestroyed),
+      map(p => p.sort())
+    ).subscribe({
+      next: value => this.prepType$.next(value)
+    });
+
     this.form = this.formBuilder.group({
       searchFilters: this.formBuilder.array([
         this.formBuilder.group({
@@ -221,11 +214,6 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
     return this.form.get('searchResults') as FormArray;
   }
 
-  ngOnDestroy(): void {
-    this.componentDestroyed.next();
-    this.componentDestroyed.complete();
-  }
-
   addFilter(): void {
     this.searchFilters.push(this.formBuilder.group({
       bool: [boolEnum.and],
@@ -243,8 +231,14 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
     this.searchFilters.removeAt(index);
   }
 
-  searchPlantSamples(): void {
+  inputLengthCalc(stringLength: number): string {
+    return `${20 + stringLength * 8}px`;
+  }
+
+  searchPreps(): void {
     this.clearSearchResults();
+    this.maxPrepNameLength = 0;
+    this.maxVolumeLength = 0;
     let emptyFilters = [];
     Object.keys(this.searchFilters.controls).forEach(key => {
       const row = this.searchFilters.get(key) as FormGroup;
@@ -258,24 +252,27 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
       this.searchFilters.removeAt(key);
     })
 
-    this.plantSampleService.getPlantSamples(JSON.stringify(this.searchFilters.getRawValue())).pipe(takeUntil(this.componentDestroyed)).subscribe({
+    this.prepService.getPrep(JSON.stringify(this.searchFilters.getRawValue())).pipe(takeUntil(this.componentDestroyed)).subscribe({
       next: value => {
-        value.forEach(plantSample => {
+        value.forEach(prep => {
+          this.maxPrepNameLength = prep.prepName.length > this.maxPrepNameLength ? prep.prepName.length : this.maxPrepNameLength;
+          this.prepNameWidth = this.inputLengthCalc(this.maxPrepNameLength);
+          this.maxVolumeLength = prep.volumeUl.toString().length > this.maxVolumeLength ? prep.volumeUl.toString().length : this.maxVolumeLength;
+          this.volumeWidth = this.inputLengthCalc(this.maxVolumeLength);
+
           this.searchResults.push(this.formBuilder.group({
             edit: [false],
-            plantSampleId: [plantSample.plantSampleId],
-            sampleName: [{value: plantSample.sampleName, disabled: true}],
-            collectionDate: [{value: this.dateFormatter(new Date(plantSample.collectionDate)), disabled: true}],
-            populationId: [{value: plantSample.populationId, disabled: true}],
-            plantSampleDescription: [{value: plantSample.plantSampleDescription, disabled: true}],
-            tissueId: [{value: plantSample.tissueId, disabled: true}],
-            duplicationId: [{value: plantSample.duplicationId, disabled: true}],
-            phenotypeId: [{value: plantSample.phenotypeId, disabled: true}],
-            sampleWeight: [{value: plantSample.sampleWeight, disabled: true}],
-            locationId: [{value: plantSample.locationId, disabled: true}],
-            shelfPositionId: [{value: plantSample.shelfPositionId, disabled: true}],
-            containerTypeId: [{value: plantSample.containerTypeId, disabled: true}],
-            prepsLocation: [[...plantSample.prepsLocation]]
+            prepId: [prep.prepId],
+            prepName: [{value: prep.prepName, disabled: true}],
+            plantSampleId: [prep.plantSampleId],
+            prepTypeId: [{value: prep.prepTypeId, disabled: true}],
+            prepLocationId: [{value: prep.prepLocationId, disabled: true}],
+            prepDescription: [{value: prep.prepDescription, disabled: true}],
+            volumeUl: [{value: prep.volumeUl, disabled: true}],
+            shelfPositionId: [{value: prep.shelfPositionId, disabled: true}],
+            containerTypeId: [{value: prep.containerTypeId, disabled: true}],
+            isolationDate: [this.dateFormatter(new Date(prep.isolationDate))],
+            duplicationId: [prep.duplicationId]
           }));
         });
       }
@@ -292,7 +289,7 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
       width: '250px',
       data: {
         filters: this.columnShowFilters,
-        filterMap: this.columnFilterMap
+        filterMap: this.filtersMap
       }
     });
 
@@ -302,15 +299,6 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
         this.columnShowFilters = result;
       }
     })
-  }
-
-  openAddPrepDialog(): void {
-    const dialofRef = this.dialog.open(PlantSampleAddPrepComponent, {
-      data: {
-        editedRows: this.getSelectedRows(),
-        reSearch: this.reSearchPlantSamples
-      }
-    });
   }
 
   getSelectedRows(): FormArray {
@@ -352,16 +340,15 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
   }
 
   save(): void {
-    let plantSamplesForUpdate = this.formBuilder.array([]);
+    let prepsForUpdate = this.formBuilder.array([]);
     Object.keys(this.searchResults.controls).forEach(key => {
       const row = this.searchResults.get(key) as FormGroup;
       if (row.get('edit').value) {
-        console.log(`Adding sample for update: ${row.get('plantSampleId').value} ...`);
-        plantSamplesForUpdate.push(this.searchResults.get(key));
+        prepsForUpdate.push(this.searchResults.get(key));
       }
     });
 
-    this.plantSampleService.updatePlantSamples(JSON.stringify(plantSamplesForUpdate.getRawValue())).pipe(takeUntil(this.componentDestroyed)).subscribe({
+    this.prepService.updatePrep(JSON.stringify(prepsForUpdate.getRawValue())).pipe(takeUntil(this.componentDestroyed)).subscribe({
       next: value => {
         console.log(value);
       }
@@ -410,28 +397,16 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
     });
   }
 
-  prepTooltipMessageFactory(prep: IPrepLocation): string {
-    let isolationDate: string;
-    if (prep.isolationDate !== null) {
-      const date = new Date(prep.isolationDate)
-      isolationDate = `${date.getFullYear()}-${this.precedingZeroFormat((date.getMonth() + 1).toString())}-${this.precedingZeroFormat(date.getDate().toString())}`;
-    } else {
-      isolationDate = 'unknown';
-    }
-
-    return `Prep type: ${prep.prepTypeName}
-    Isolation date: ${isolationDate}
-    Location: ${prep.locationName}
-    Location type: ${prep.locationTypeName}
-    Shelf position: ${prep.shelfPositionName}
-    Container type: ${prep.containerTypeName}`;
-  }
-
   precedingZeroFormat(value: string): string {
     return value.length === 2 ? value : `0${value}`;
   }
 
   dateFormatter(date: Date): string {
     return `${date.getFullYear()}-${this.precedingZeroFormat((date.getMonth() + 1).toString())}-${this.precedingZeroFormat(date.getDate().toString())}`;
+  }
+
+  ngOnDestroy(): void {
+    this.componentDestroyed.next();
+    this.componentDestroyed.complete();
   }
 }

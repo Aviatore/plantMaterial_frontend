@@ -18,6 +18,7 @@ import {PopulationShowComponent} from "./components/population-show/population-s
 import {PopulationEditComponent} from "./components/population-edit/population-edit.component";
 import {PlantSampleAddComponent} from "./components/plant-sample-add/plant-sample-add.component";
 import {PlantSampleShowEditComponent} from "./components/plant-sample-show-edit/plant-sample-show-edit.component";
+import {PrepsShowComponent} from "./components/preps-show/preps-show.component";
 
 const routes: Routes = [
   {
@@ -123,6 +124,10 @@ const routes: Routes = [
   {
     path: 'plant-sample/show',
     component: PlantSampleShowEditComponent
+  },
+  {
+    path: 'prep/show',
+    component: PrepsShowComponent
   }
 ];
 

@@ -1,13 +1,5 @@
 <form [formGroup]="form">
-  <mat-checkbox formControlName="showSampleName">Sample name</mat-checkbox><br>
-  <mat-checkbox formControlName="showCollectionDate">Collection date</mat-checkbox><br>
-  <mat-checkbox formControlName="showPopulation">Population name</mat-checkbox><br>
-  <mat-checkbox formControlName="showTissue">Tissue</mat-checkbox><br>
-  <mat-checkbox formControlName="showDuplication">Duplication</mat-checkbox><br>
-  <mat-checkbox formControlName="showPhenotype">Phenotype</mat-checkbox><br>
-  <mat-checkbox formControlName="showSampleWeight">Sample weight</mat-checkbox><br>
-  <mat-checkbox formControlName="showLocation">Location</mat-checkbox><br>
-  <mat-checkbox formControlName="showShelfPosition">Shelf position</mat-checkbox><br>
-  <mat-checkbox formControlName="showContainerType">Container type</mat-checkbox><br>
-  <mat-checkbox formControlName="showPreps">Preps</mat-checkbox><br>
+  <div *ngFor="let filter of filterKeys">
+    <mat-checkbox [formControlName]="filter">{{filterMap[filter]}}</mat-checkbox>
+  </div>
 </form>

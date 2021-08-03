@@ -1,0 +1,30 @@
+label {
+  margin-right: 5px;
+}
+
+.is-invalid {
+  outline-color: red;
+  border-color: red;
+}
+
+select, option {
+  min-width: 50px;
+}
+
+select {
+  height: 30px;
+}
+
+input, select {
+  margin-bottom: 5px;
+  margin-right: 5px;
+}
+
+.action-button {
+  margin-left: 15px;
+}
+
+::ng-deep .prep-tooltip {
+  font-size: 1em;
+  white-space: pre-line;
+}

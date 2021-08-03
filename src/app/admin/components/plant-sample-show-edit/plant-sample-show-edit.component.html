@@ -10,7 +10,7 @@
             </option>
           </select>
 
-          <select (change)="onFilterSelectionChange($event)" #element formControlName="filter">
+          <select #element formControlName="filter">
             <option value='' selected>-- Select filter --</option>
             <option *ngFor="let filterKey of filterKeys.sort()" [value] = filterKey>
               {{filtersMap[filterKey]}}
