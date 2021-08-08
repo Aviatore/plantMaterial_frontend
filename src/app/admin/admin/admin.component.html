@@ -16,13 +16,15 @@
             <i class="fas fa-bacteria"></i> Populations
           </div>
           <div class="col-md-12 text-secondary mt-3">
-            <i class="fas fa-leaf"></i> Plant samples
-          </div>
-          <div class="col-md-12 text-success">
-            <a routerLink="plant-sample/add" class="text-success">Add plant sample</a>
-          </div>
-          <div class="col-md-12 text-success">
-            <a routerLink="plant-sample/show" class="text-success">Show plant samples</a>
+            <span (click)="plantSampleTrigger()"><i class="fas fa-leaf"></i> Plant samples</span>
+            <div [@clicker]="plantSamples">
+              <div class="col-md-12 text-success">
+                <a routerLink="plant-sample/add" class="text-success">Add plant sample</a>
+              </div>
+              <div class="col-md-12 text-success">
+                <a routerLink="plant-sample/show" class="text-success">Show plant samples</a>
+              </div>
+            </div>
           </div>
 
           <div class="col-md-12 text-secondary mt-3">

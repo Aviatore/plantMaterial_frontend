@@ -369,6 +369,7 @@ export class PlantSampleShowEditComponent implements OnInit, OnDestroy {
   }
 
   mark(ranges: string): void {
+    
     const indexRanges = this.rangesToMark.nativeElement.value.split(',');
     console.log(indexRanges);
     indexRanges.forEach(value => {
